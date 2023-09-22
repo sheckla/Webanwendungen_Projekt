@@ -1,0 +1,17 @@
+<div class="input-group">
+  <button class="btn d-flex align-items-center" (click)="datepicker.toggle()" type="button">
+    <span class="icon icon-calendar"></span>
+  </button>
+  <input
+    class="form-control date-input"
+    [placeholder]="placeholder"
+    [minDate]="minDate ? { day: minDate.day, month: minDate.month, year: minDate.year } : null"
+    [maxDate]="maxDate ? { day: maxDate.day, month: maxDate.month, year: maxDate.year } : null"
+    (click)="datepicker.toggle()"
+    [formControl]="date"
+    [readOnly]="readonly"
+    ngbDatepicker
+    #datepicker="ngbDatepicker"
+    [attr.id]="labelForId"
+  />
+</div>

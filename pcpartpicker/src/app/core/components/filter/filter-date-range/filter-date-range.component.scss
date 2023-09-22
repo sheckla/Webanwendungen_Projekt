@@ -1,0 +1,30 @@
+@import 'theme';
+
+form {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+}
+
+.custom-day {
+  text-align: center;
+  padding: 0.185rem 0.25rem;
+  display: inline-block;
+  height: 2rem;
+  width: 2rem;
+
+  &.focused {
+    background-color: #e6e6e6;
+  }
+
+  &.range,
+  &:hover {
+    background-color: $primary;
+    color: $light;
+  }
+
+  &.faded {
+    background-color: rgba($primary, 0.4);
+    color: $dark;
+  }
+}

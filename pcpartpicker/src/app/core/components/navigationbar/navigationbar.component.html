@@ -1,0 +1,27 @@
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <!-- Tab 1 -->
+    <ion-tab-button tab="dashboard" href="/tabs/dashboard">
+      <ion-icon name="home-outline"></ion-icon>
+      <ion-label>Dashboard</ion-label>
+    </ion-tab-button>
+
+    <!-- Tab 2 -->
+    <ion-tab-button tab="configuration" href="/tabs/configuration">
+      <ion-icon name="construct-outline"></ion-icon>
+      <ion-label>Configuration</ion-label>
+    </ion-tab-button>
+
+    <!-- Tab 3 -->
+    <ion-tab-button tab="tab3" href="/tabs/TODO">
+      <ion-icon name="earth-outline"></ion-icon>
+      <ion-label>Public</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button id="open-modal">
+      <ion-icon name="person-circle-outline"></ion-icon>
+      <ion-label>User</ion-label>
+    </ion-tab-button>
+    <app-login></app-login>
+  </ion-tab-bar>
+</ion-tabs>

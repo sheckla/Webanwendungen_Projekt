@@ -1,0 +1,28 @@
+version: '3.7'
+
+services:
+  mongo:
+    container_name: container-mongodb
+    image: mongo:latest
+    restart: always
+    ports:
+      - 27017:27017
+
+    environment:
+      MONGO_INITDB_DATABASE: root-db
+
+    volumes:
+      - ./database/import.js:/docker-entrypoint-import.d/import.js:ro
+
+    # TODO: db config for postgres
+    # postgres-db:
+    # image: postgres:latest
+    # container_name: postgres-db
+    # environment:
+    #   POSTGRES_PASSWORD: your-postgres-password
+    #   POSTGRES_DB: root-db
+    # ports:
+    #   - "5432:5432"
+    # volumes:
+    #   -
+

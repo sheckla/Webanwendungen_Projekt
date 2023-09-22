@@ -1,0 +1,67 @@
+<form class="position-relative">
+  <div class="dp-hidden position-absolute bottom-0 start-0">
+    <div class="input-group">
+      <input
+        class="visually-hidden"
+        ngbDatepicker
+        #datepicker="ngbDatepicker"
+        autoClose="outside"
+        (dateSelect)="onDateSelection($event)"
+        [displayMonths]="2"
+        [dayTemplate]="t"
+        outsideDays="hidden"
+        [startDate]="fromDate!"
+        tabindex="-1"
+        [minDate]="minDate ? { day: minDate.day, month: minDate.month, year: minDate.year } : null"
+        [maxDate]="maxDate ? { day: maxDate.day, month: maxDate.month, year: maxDate.year } : null"
+      />
+      <ng-template #t let-date let-focused="focused">
+        <span
+          class="custom-day"
+          [class.focused]="focused"
+          [class.range]="isRange(date)"
+          [class.faded]="isHovered(date) || isInside(date)"
+          (mouseenter)="hoveredDate = date"
+          (mouseleave)="hoveredDate = null"
+        >
+          {{ date.day }}
+        </span>
+      </ng-template>
+    </div>
+  </div>
+
+  <div class="input-group">
+    <button class="btn d-flex align-items-center" (click)="datepicker.toggle()" type="button" [disabled]="disabled">
+      <span class="icon icon-calendar"></span>
+    </button>
+
+    <input
+      #dpFromDate
+      class="form-control"
+      [placeholder]="placeholderFrom"
+      [value]="formatter.format(fromDate)"
+      (click)="datepicker.open()"
+      readonly="true"
+      (input)="fromDate = validateInput(fromDate, dpFromDate.value)"
+      [disabled]="disabled"
+      [attr.id]="labelForId"
+    />
+  </div>
+
+  <div class="input-group">
+    <button class="btn d-flex align-items-center" (click)="datepicker.toggle()" type="button" [disabled]="disabled">
+      <span class="icon icon-calendar"></span>
+    </button>
+
+    <input
+      #dpToDate
+      class="form-control"
+      [placeholder]="placeholderTo"
+      [value]="formatter.format(toDate)"
+      (click)="datepicker.open()"
+      readonly="true"
+      (input)="toDate = validateInput(toDate, dpToDate.value)"
+      [disabled]="disabled"
+    />
+  </div>
+</form>

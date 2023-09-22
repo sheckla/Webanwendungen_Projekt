@@ -1,0 +1,7 @@
+{
+  "name": "pcpartpicker",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

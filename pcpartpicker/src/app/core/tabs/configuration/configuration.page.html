@@ -1,0 +1,16 @@
+<ion-content>
+    <div style="height: 20px"></div>
+    Config Name<input type="text" #commentFormText>
+    <ion-button (click)="this.api.createConfiguration(commentFormText.value)">create config</ion-button>
+    <ion-button (click)="this.api.getPrivateConfigurations()">create config</ion-button>
+
+    <ion-list>
+        <ion-item>
+            <ion-select label="Select a Configuration" interface="popover" label-placement="floating">
+                <ion-select-option *ngFor="let configuration of this.api.privateConfigurations" value="{{configuration.data.id}}">
+                    {{configuration.data.pcName}}
+                </ion-select-option>
+            </ion-select>
+        </ion-item>
+    </ion-list>
+</ion-content>

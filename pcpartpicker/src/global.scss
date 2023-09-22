@@ -1,0 +1,218 @@
+/*
+ * App Global CSS
+ * ----------------------------------------------------------------------------
+ * Put style rules here that you want to apply globally. These styles are for
+ * the entire app and not just one component. Additionally, this file can be
+ * used as an entry point to import other CSS/Sass files to be included in the
+ * output CSS.
+ * For more information on global stylesheets, visit the documentation:
+ * https://ionicframework.com/docs/layout/global-stylesheets
+ */
+
+/* Core CSS required for Ionic components to work properly */
+@import "@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import '@ionic/angular/css/display.css';
+
+/* Optional CSS utils that can be commented out */
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
+* {
+    font-family: 'Poppins', 'Roboto', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+ion-content {
+    // --background: rgba(255, 255, 255, 0.05)url('./assets/img/svg/triangles.png') no-repeat center center / cover;
+    --background: rgba(255, 255, 255, 0.05)url('./assets/img/svg/subtle-prism.svg') no-repeat center center / cover;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-y: -130px;
+    background-color: #001220;
+}
+
+.container {
+    width: 80%;
+    margin: auto;
+}
+
+
+/* ==== Border Debug ==== */
+* {
+    // border: solid rgb(255, 242, 0, 0.1) 1px;
+}
+
+/* ==== Navbar ==== */
+.nav-transparent {
+    background-color: rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(3px);
+}
+
+.nav-img {
+    width: 2.5em;
+    height: 2.5em;
+    transition: 0.1s;
+    transform: scale(1);
+    margin-right: 5px;
+}
+
+// Hovering
+.nav-a-lg {
+    padding-left: 5px;
+    padding-right: 10px;
+}
+
+.nav-a-lg:hover {
+    background: rgba(255, 255, 255, 0.273);
+}
+
+.nav-a-lg:hover .nav-img {
+    transform: scale(1.1);
+    transition: .1s ease-in-out;
+}
+
+
+/* ==== Welcoming Header ==== */
+.div-blur {
+    background-color: rgba(255, 255, 255, 0.11) !important;
+    backdrop-filter: blur(25px);
+    border-radius: 2em 2em 2em 2em;
+    background-image: none;
+}
+
+.list-item {
+    background-color: rgba(255, 255, 255, 0.11);
+    color: rgba(255, 255, 255, 0.11);
+}
+
+.select-item {
+    --background: rgba(255, 255, 255, 0.11);
+    --border-color: rgba(255, 255, 255, 0.11);
+}
+
+
+.blur {
+    backdrop-filter: blur(45px);
+}
+
+/*****************************
+ *  Part Cards
+ *****************************/
+.part-card {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+
+/*****************************
+ *  Animations
+ *****************************/
+
+.btn-wrong-input {
+    animation: shake 0.5s;
+    box-shadow: 0 0 20px rgba(255, 0, 76, 0.45);
+}
+
+// Fade In Animations
+.fade-in-0 {
+    opacity: 0;
+    animation-fill-mode: forwards !important;
+    animation: fadeIn 1s;
+    transition: width 0.5s;
+}
+
+.fade-in-1 {
+    opacity: 0;
+    animation-fill-mode: forwards !important;
+    animation: fadeIn 1s;
+    animation-delay: 250ms;
+    transition: width 0.5s;
+}
+
+.fade-in-2 {
+    opacity: 0;
+    animation-fill-mode: forwards !important;
+    animation: fadeIn 1s;
+    animation-delay: 500ms;
+    transition: width 0.5s;
+}
+
+.fade-in-3 {
+    opacity: 0;
+    animation-fill-mode: forwards !important;
+    animation: fadeIn 1s;
+    animation-delay: 750ms;
+    transition: width 0.5s;
+}
+
+.fade-in-4 {
+    opacity: 0;
+    animation-fill-mode: forwards !important;
+    animation: fadeIn 1s;
+    animation-delay: 1000ms;
+    transition: width 0.5s;
+}
+
+.fade-in-5 {
+    opacity: 0;
+    animation-fill-mode: forwards !important;
+    animation: fadeIn 1s;
+    animation-delay: 1250ms;
+    transition: width 0.5s;
+}
+
+.fade-in-6 {
+    opacity: 0;
+    animation-fill-mode: forwards !important;
+    animation: fadeIn 1s;
+    animation-delay: 1500ms;
+    transition: width 0.5s;
+}
+
+.fade-in-7 {
+    opacity: 0;
+    animation-fill-mode: forwards !important;
+    animation: fadeIn 1s;
+    animation-delay: 1750ms;
+    transition: width 0.5s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-10px);
+    }
+
+    50% {
+        transform: translateX(10px);
+    }
+
+    75% {
+        transform: translateX(-10px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
