@@ -10,4 +10,5 @@ public interface UserCatalog {
     List<UserInfoDTO> getAllUsers();
     void register(String name,String password, String role);
     boolean usernameNotAlreadyTaken(String name);
+    UserInfoDTO findById(String username);
 }

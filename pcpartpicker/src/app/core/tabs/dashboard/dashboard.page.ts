@@ -8,14 +8,14 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { tap } from 'rxjs';
 import { ApiService } from 'src/app/services/api/api.service';
 import { PartCreatorService } from 'src/app/services/part-creator/part-creator.service';
 import {
   FilterSelectComponent,
-  SelectOption,
 } from '../../components/filter/filter-select/filter-select.component';
 import { ImageUploadComponent } from '../../components/image-upload/image-upload.component';
+import { UserService } from 'src/app/services/user/user.service';
+import { PartItemComponent } from "../../components/part-item/part-item.component";
 
 @Component({
   selector: 'app-dashboard',
@@ -30,42 +30,60 @@ import { ImageUploadComponent } from '../../components/image-upload/image-upload
     FilterSelectComponent,
     NgSelectModule,
     ImageUploadComponent,
-  ],
+    PartItemComponent
+  ]
 })
 export class DashboardPage implements OnInit {
-  selectedImageFile?: File;
-  fileMap: Map<String, File> = new Map();
-  public partId = '64fec3535cdd7636718eb9ce';
-  myInputList: string[] = ['', 'Hello World', 'Bye World'];
-  public options: SelectOption<string>[] = [
-    { value: 'CPU', label: 'Cpu' },
-    { value: 'MAINBOARD', label: 'Mainboard' },
-  ];
-  selectedCar: any;
-  filterForm: FormGroup = new FormGroup({
-    partType: new FormControl<string | null>(null),
-    hasImage: new FormControl<boolean | null>(null),
-  });
+  public partFilter: FormGroup = new FormGroup({
+    cpu: new FormControl(null, null),
+    mainboard: new FormControl(null, null),
+    gpu: new FormControl(null, null),
+    psu: new FormControl(null, null),
+    case: new FormControl(null, null),
+    fan: new FormControl(null, null),
+    manufacturerName: new FormControl(null, null),
+    partName: new FormControl(null, null)
+  })
 
-  constructor(public api: ApiService, public partCreator: PartCreatorService) {}
+  public filteredParts: any[] = [];
+
+  constructor(public api: ApiService,
+    public partCreator: PartCreatorService,
+    public user: UserService) { }
 
   ngOnInit() {
-    // console.log(this.options);
-    this.api.getAllParts();
-    // let name = "daniel" + (Math.random() * 1000).toFixed(0);
-    // this.api.createUser("peter", "peter");
-    // this.api.getUserMe('admin', 'admin');
-    this.filterForm.valueChanges.pipe(
-      tap((value: any) => {
-        // console.log('pipe, tap', value);
-      })
-    );
-    this.filterForm.valueChanges.subscribe((value: any) => {
-      // console.log('subscribe', value);
+    this.api.getAllParts()?.subscribe((data: any) => {
+      this.filteredParts = data;
+      this.filteredParts = this.api.allParts();
     });
+
   }
 
-  test() {
-    console.log('outline');
+  public resetFilter() {
+    this.partFilter.reset();
+  }
+
+  public submitFilter() {
+    let parts: any[] = [];
+    let filter = this.partFilter.value;
+    if (filter.cpu) {
+      parts = parts.concat(this.api.cpus);
+    }
+    if (filter.mainboard) {
+      parts = parts.concat(this.api.motherboards);
+    }
+    if (filter.psu) {
+      parts = parts.concat(this.api.psus);
+    }
+    if (filter.gpu) {
+      parts = parts.concat(this.api.gpus);
+    }
+    if (filter.case) {
+      parts = parts.concat(this.api.cases);
+    }
+    if (filter.fan) {
+      parts = parts.concat(this.api.fans);
+    }
+    this.filteredParts = parts;
   }
 }

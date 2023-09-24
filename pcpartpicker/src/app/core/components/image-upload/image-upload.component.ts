@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { ApiService } from '../../../services/api/api.service';
+import { UserService } from 'src/app/services/user/user.service';
 
 @Component({
   selector: 'app-image-upload',
@@ -15,9 +16,10 @@ export class ImageUploadComponent implements OnInit {
   @Input() partId?: string;
   private selectedImageFile?: File;
 
-  constructor(private api: ApiService) {}
+  constructor(private api: ApiService,
+    public user: UserService) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   public setFileInput(fileInputEvent: any): void {
     if (!fileInputEvent.target.files) {

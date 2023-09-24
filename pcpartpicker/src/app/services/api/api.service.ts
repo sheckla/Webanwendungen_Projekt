@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment.prod';
-import { Observable, of, tap } from 'rxjs';
+import { Observable, map, of, tap } from 'rxjs';
 import { Pair } from '../part-types';
 
 @Injectable({
@@ -19,7 +19,7 @@ export class ApiService {
   public motherboards: any[] = [];
   public psus: any[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getBasicAuthHeader() {
     const header = {
@@ -29,45 +29,40 @@ export class ApiService {
     return header;
   }
 
-  getAllParts() {
+  getAllParts(): Observable<any> | null {
     const allPartsUrl = environment.api.baseUrl + '/pc-parts/all-parts';
     console.log('getting parts from ', allPartsUrl);
 
     if (this.cases.length > 0) {
-      return;
+      // return null;
     }
 
-    this.http.get(allPartsUrl).subscribe((data: any) => {
-      this.cases = [];
-      this.cpus = [];
-      this.gpus = [];
-      this.fans = [];
-      this.motherboards = [];
-      this.psus = [];
-      console.log('all parts:', data);
-
-      data.forEach((element: any) => {
-        switch (element.data.type) {
-          case 'CASE':
-            this.cases?.push(element);
-            break;
-          case 'CPU':
-            this.cpus?.push(element);
-            break;
-          case 'GPU':
-            this.gpus?.push(element);
-            break;
-          case 'FAN':
-            this.fans?.push(element);
-            break;
-          case 'PSU':
-            this.psus?.push(element);
-            break;
-          default:
-            break;
-        }
-      });
-    });
+    return this.http.get(allPartsUrl).pipe(
+      map((data: any) => {
+        console.log(data);
+        data.forEach((element: any) => {
+          switch (element.data.type) {
+            case 'CASE':
+              this.cases.push(element);
+              break;
+            case 'CPU':
+              this.cpus.push(element);
+              break;
+            case 'GPU':
+              this.gpus.push(element);
+              break;
+            case 'FAN':
+              this.fans.push(element);
+              break;
+            case 'PSU':
+              this.psus.push(element);
+              break;
+            default:
+              break;
+          }
+        });
+      }),
+    );
   }
 
   allParts(): any[] {
@@ -117,7 +112,7 @@ export class ApiService {
       );
   }
 
-  isModerator() {}
+  isModerator() { }
 
   getPartImageLink(id: string): string {
     return environment.api.baseUrl + '/pc-parts/' + id + '/image';
@@ -173,7 +168,7 @@ export class ApiService {
     return pairs;
   }
 
-  postPartComment(part: any, text: any, rating: any): void {
+  postPartComment(part: any, text: any, rating: any): Observable<any> {
     const partCommentUrl =
       environment.api.baseUrl + '/pc-parts/' + part.data.id + '/comment';
     const headers = this.getBasicAuthHeader();
@@ -181,14 +176,13 @@ export class ApiService {
       commentary: text,
       userRating: rating,
     };
-    console.log(body);
-    console.log('publishing comment: ', text, rating);
-    this.http
-      .post(partCommentUrl, body, { headers: headers })
-      .subscribe((data: any) => {
-        console.log(data);
-        part.comments.push(data);
-      });
+
+    let observable: Observable<any> = this.http.post(partCommentUrl, body, { headers: headers });
+    observable.subscribe((data: any) => {
+      part.comments.push(data);
+    });
+
+    return observable;
   }
 
   getPartComments(part: any): any[] {
@@ -211,15 +205,16 @@ export class ApiService {
     });
   }
 
-  deletePartComment(part: any, comment: any): void {
+  deletePartComment(part: any, comment: any): Observable<any> {
     const url =
       environment.api.baseUrl +
       '/pc-parts/' +
       comment.parentId +
       '/comments/' +
       comment.id;
-    console.log(url);
-    this.http.delete(url, { headers: this.getBasicAuthHeader() }).subscribe(
+
+    let observable: Observable<any> = this.http.delete(url, { headers: this.getBasicAuthHeader() })
+    observable.subscribe(
       (data: any) => {
         console.log(data);
         this.refreshPartComments(part);
@@ -228,6 +223,7 @@ export class ApiService {
         console.log('error while deleting comment', error.status);
       }
     );
+    return observable;
   }
 
   createConfiguration(name: string) {

@@ -1,0 +1,15 @@
+<form [formGroup]="this.commentGroup" (submit)="this.submitComment()">
+  <!-- Comment  -->
+  <ion-input formControlName="commentText" fill="outline" type="text" label="Comment" labelPlacement="stacked"
+    placeholder="Type here" required="true" [clearInput]="true" errorText="Invalid Comment"></ion-input>
+
+  <!-- Rating 1 to 5 -->
+  <ion-range value="3" [pin]="true" [ticks]="true" [snaps]="true" [min]="1" [max]="5" formControlName="commentRating"
+    errorText="Whoops">
+    <ion-icon (click)="tapLowerRating()" slot="start" name="sad-outline"></ion-icon>
+    <ion-icon (click)="tapHigherRating()" slot="end" name="happy-outline"></ion-icon>
+  </ion-range>
+
+  <ion-button (click)="this.submitComment()">comment</ion-button>
+  <!-- <ion-button (click)="this.api.postPartComment(item, commentFormText.value, range.value)">comment</ion-button> -->
+</form>

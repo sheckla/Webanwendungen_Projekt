@@ -11,6 +11,7 @@ import org.jboss.logging.Logger;
 
 import de.hsos.swe.projektarbeit.Users.boundary.dto.UserDTO;
 import de.hsos.swe.projektarbeit.Users.control.UserCatalog;
+import de.hsos.swe.projektarbeit.Users.entity.User;
 import de.hsos.swe.projektarbeit.Users.gateway.dto.UserInfoDTO;
 import io.quarkus.security.Authenticated;
 import jakarta.annotation.security.PermitAll;
@@ -57,7 +58,15 @@ public class UsersResource {
     @Timeout(value = 2500)
     @CircuitBreaker(requestVolumeThreshold = 10)
     public Response me(@Context SecurityContext securityContext) {
-        return Response.status(200).entity(securityContext.getUserPrincipal().getName()).build();
+        // User user = this.repository.
+        if (this.repository.usernameNotAlreadyTaken(securityContext.getUserPrincipal().getName())) {
+            System.out.println("username not already taken");
+        }
+        UserInfoDTO dto = this.repository.findById(securityContext.getUserPrincipal().getName());
+        return Response.status(200).entity(dto).build();
+        // return Response
+        // return
+        // Response.status(200).entity(securityContext.getUserPrincipal().getName()).build();
     }
 
     @POST

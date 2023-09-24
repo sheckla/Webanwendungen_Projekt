@@ -1,0 +1,19 @@
+<div *ngFor="let comment of this.api.getPartComments(this.part)">
+  <ion-grid class="div-blur ion-padding ion-margin-top">
+    <ion-row>
+      <ion-col>
+        <!-- Time written -->
+        {{this.convertTimeString(comment.date)}}
+        <!-- Username & Rating -->
+        {{comment.userName}} rated {{comment.userRating}} / 5
+        <!-- Moderators only: delete comment -->
+        <ion-button size="small" class="ion-float-right" color="danger" (click)="this.deleteComment(comment)">Remove</ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        {{comment.commentary}}
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</div>

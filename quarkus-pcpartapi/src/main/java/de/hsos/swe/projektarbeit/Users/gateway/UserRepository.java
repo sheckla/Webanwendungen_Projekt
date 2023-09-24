@@ -7,12 +7,28 @@ import de.hsos.swe.projektarbeit.Users.control.UserCatalog;
 import de.hsos.swe.projektarbeit.Users.entity.User;
 import de.hsos.swe.projektarbeit.Users.gateway.dto.UserInfoDTO;
 import io.quarkus.elytron.security.common.BcryptUtil;
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.enterprise.context.RequestScoped;
 /**
  * @author Jannis Welkener
  */
 @RequestScoped
 public class UserRepository implements UserCatalog{
+
+    @Override
+    public UserInfoDTO findById(String username) {
+        UserInfoDTO user = new UserInfoDTO();
+        List<PanacheEntityBase> users = User.listAll();
+        for (int i = 0; i < users.size(); i++) {
+            if (((User)users.get(i)).username.equals(username)) {
+                user = new UserInfoDTO();
+                user.name = ((User)users.get(i)).username;
+                user.id = ((User)users.get(i)).id;
+                user.role = ((User)users.get(i)).role;
+            }
+        }
+        return user;
+    }
 
     @Override
     public List<UserInfoDTO> getAllUsers(){
