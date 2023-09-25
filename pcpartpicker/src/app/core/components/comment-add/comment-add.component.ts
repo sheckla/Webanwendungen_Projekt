@@ -46,7 +46,7 @@ export class CommentAddComponent implements OnInit {
     let rating: number = this.commentGroup.controls['commentRating'].value;
     if (this.commentGroup.valid) {
       this.api.postPartComment(this.item, text, rating).subscribe((data: any) => {
-        this.toast.presentToast('top', 'Comment added!');
+        this.toast.present('top', 'Comment added!');
       });
     }
   }

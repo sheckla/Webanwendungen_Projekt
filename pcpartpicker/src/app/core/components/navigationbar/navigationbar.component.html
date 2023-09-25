@@ -13,14 +13,22 @@
     </ion-tab-button>
 
     <!-- Tab 3 -->
-    <ion-tab-button tab="tab3" href="/tabs/TODO">
+    <ion-tab-button tab="public" href="/tabs/public">
       <ion-icon name="earth-outline"></ion-icon>
       <ion-label>Public</ion-label>
     </ion-tab-button>
 
+    <!-- Login Modal -->
     <ion-tab-button id="open-modal">
       <ion-icon name="person-circle-outline"></ion-icon>
-      <ion-label>User</ion-label>
+      <ion-label>
+        <div *ngIf="!this.user.isLoggedIn; else elseBlock">
+          Login
+        </div>
+        <ng-template #elseBlock>
+          {{ this.user.username }}
+        </ng-template>
+      </ion-label>
     </ion-tab-button>
     <app-login></app-login>
   </ion-tab-bar>

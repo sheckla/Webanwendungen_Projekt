@@ -1,1 +1,18 @@
-<ion-content> public </ion-content>
+<ion-content>
+  <h3>{{this.api.publicConfigurations.length}} Results!</h3>
+  <ion-grid>
+    <ion-row>
+      <ion-col
+        size="12"
+        size-sm="4"
+        *ngFor="let item of this.api.publicConfigurations; index as i"
+      >
+        <!-- 1/4 Part-Info card -->
+        <!-- <div class="div-blur ion-margin"> -->
+          <app-public-configuration-item [item]="item"></app-public-configuration-item>
+          <!-- <app-part-item [item]="item"></app-part-item> -->
+        <!-- </div> -->
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

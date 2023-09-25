@@ -10,20 +10,25 @@ import { UserService } from 'src/app/services/user/user.service';
   templateUrl: './comment-list.component.html',
   styleUrls: ['./comment-list.component.scss'],
   standalone: true,
-  imports: [CommonModule, IonicModule]
+  imports: [CommonModule, IonicModule],
 })
 export class CommentListComponent implements OnInit {
   @Input() part?: any;
+  public comments: any[] = [];
 
-  constructor(public api: ApiService,
+  constructor(
+    public api: ApiService,
     public toast: ToastService,
-    public user: UserService) { }
+    public user: UserService
+  ) {}
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.comments = this.api.getPartComments(this.part);
+  }
 
   deleteComment(comment: any): void {
     this.api.deletePartComment(this.part, comment).subscribe((data: any) => {
-      this.toast.presentToast('top', 'Comment removed!');
+      this.toast.present('top', 'Comment removed!');
     });
   }
 

@@ -59,9 +59,9 @@
       <div *ngIf="this.user.isLoggedIn" class="ion-padding div-blur">
         <h2>Welcome!</h2>
         <span>Your role is: {{this.user.role}}</span><br>
-        <span *ngIf="this.user.role == 'user'">As a registered user you can create custom configurations.</span>
-        <span *ngIf="this.user.role == 'moderator'">As a moderator you can delete comments.</span>
-        <span *ngIf="this.user.role == 'admin'">As an admin you can upload new parts and add images.</span>
+        <span *ngIf="this.user.role === 'user'">As a registered user you can create custom configurations.</span>
+        <span *ngIf="this.user.role === 'moderator'">As a moderator you can delete comments.</span>
+        <span *ngIf="this.user.role === 'admin'">As an admin you can upload new parts and add images.</span>
         <br>
         <ion-button (click)="logout()" color="danger">Logout</ion-button>
       </div>

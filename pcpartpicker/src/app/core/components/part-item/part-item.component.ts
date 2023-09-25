@@ -1,25 +1,29 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { ImageUploadComponent } from '../image-upload/image-upload.component';
 import { ApiService } from 'src/app/services/api/api.service';
-import { CommentAddComponent } from "../comment-add/comment-add.component";
-import { CommentListComponent } from "../comment-list/comment-list.component";
+import { CommentAddComponent } from '../comment-add/comment-add.component';
+import { CommentListComponent } from '../comment-list/comment-list.component';
 
 @Component({
-    selector: 'app-part-item',
-    templateUrl: './part-item.component.html',
-    styleUrls: ['./part-item.component.scss'],
-    standalone: true,
-    imports: [CommonModule, IonicModule, ImageUploadComponent, CommentAddComponent, CommentListComponent]
+  selector: 'app-part-item',
+  templateUrl: './part-item.component.html',
+  styleUrls: ['./part-item.component.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    IonicModule,
+    ImageUploadComponent,
+    CommentAddComponent,
+    CommentListComponent,
+  ],
 })
-export class PartItemComponent implements OnInit {
+export class PartItemComponent implements OnInit, OnChanges {
   @Input() item: any;
 
-  constructor(public api: ApiService) { }
+  constructor(public api: ApiService) {}
 
-  ngOnInit() { }
-
-
-
+  ngOnInit() {}
+  ngOnChanges() {}
 }

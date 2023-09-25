@@ -1,0 +1,71 @@
+<form
+  [formGroup]="this.partGroup"
+  (submit)="this.onSubmit()"
+  (reset)="this.onReset()"
+>
+  <ion-grid class="div-blur container">
+    <div class="container">
+      <h1>Create a new Part</h1>
+
+      <!-- Select Part Type -->
+      <ion-list>
+        <ion-item>
+          <ion-select
+            label="Select a Part Type"
+            value=""
+            interface="popover"
+            label-placement="floating"
+            formControlName="partType"
+            (ionChange)="this.onSelectPartType($event)"
+          >
+            <ion-select-option
+              *ngFor="let partType of this.partCreator.partTypesArr"
+              value="{{ partType }}"
+            >
+              {{ partType }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
+
+      <!-- Dynamic Form Input fields -->
+      <div
+        formGroupName="partInfo"
+        *ngFor="let input of this.questions; let i = index"
+      >
+        <ion-grid>
+          <ion-row>
+            <ion-col> {{ input.label }} </ion-col>
+            <ion-col>
+              <div [ngSwitch]="input.controlType">
+                <div *ngSwitchCase="'textbox'">
+                  <ion-input
+                    [label]="input.label"
+                    [placeholder]="input.placeholder"
+                    [value]="input.value"
+                    [formControlName]="input.key"
+                    labelPlacement="stacked"
+                    [clearInput]="true"
+                  ></ion-input>
+                </div>
+                <div *ngSwitchCase="'checkbox'">
+                  <ion-checkbox value="false">Checkbox</ion-checkbox>
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+
+      <!-- Upload / Reset Button  -->
+      <ion-row>
+        <ion-col>
+          <ion-button type="submit">Upload</ion-button>
+        </ion-col>
+        <ion-col>
+          <ion-button type="reset">Reset</ion-button>
+        </ion-col>
+      </ion-row>
+    </div>
+  </ion-grid>
+</form>

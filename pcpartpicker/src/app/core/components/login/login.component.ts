@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
 
   public toggleRegister() {
     this.registerFormActive = !this.registerFormActive;
-    this.toastService.presentToast('top', "Hi");
+    this.toastService.present('top', "Hi");
   }
 
   cancel() {

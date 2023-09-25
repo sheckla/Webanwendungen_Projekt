@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment.prod';
 import { Observable, map, of, tap } from 'rxjs';
 import { Pair } from '../part-types';
+import { UserService } from '../user/user.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,7 @@ export class ApiService {
   private loggedIn: Boolean = false;
   private username?: string;
   public privateConfigurations: any[] = [];
+  public publicConfigurations: any[] = [];
 
   public cases: any[] = [];
   public cpus: any[] = [];
@@ -19,13 +21,15 @@ export class ApiService {
   public motherboards: any[] = [];
   public psus: any[] = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private user: UserService) {}
 
   getBasicAuthHeader() {
-    const header = {
-      'Content-Type': 'application/json',
-      Authorization: 'Basic ' + btoa('admin:admin'),
-    };
+    // const header = {
+    //   'Content-Type': 'application/json',
+    //   Authorization: 'Basic ' + btoa('admin:admin'),
+    // };
+    let header: any = this.user.getAuthHeader();
+    header['Content-Type'] = 'application/json';
     return header;
   }
 
@@ -33,13 +37,12 @@ export class ApiService {
     const allPartsUrl = environment.api.baseUrl + '/pc-parts/all-parts';
     console.log('getting parts from ', allPartsUrl);
 
-    if (this.cases.length > 0) {
-      // return null;
+    if (this.allParts().length > 0) {
+      return null;
     }
 
     return this.http.get(allPartsUrl).pipe(
       map((data: any) => {
-        console.log(data);
         data.forEach((element: any) => {
           switch (element.data.type) {
             case 'CASE':
@@ -57,11 +60,14 @@ export class ApiService {
             case 'PSU':
               this.psus.push(element);
               break;
+            case 'MOTHERBOARD':
+              this.motherboards.push(element);
+              break;
             default:
               break;
           }
         });
-      }),
+      })
     );
   }
 
@@ -112,7 +118,7 @@ export class ApiService {
       );
   }
 
-  isModerator() { }
+  isModerator() {}
 
   getPartImageLink(id: string): string {
     return environment.api.baseUrl + '/pc-parts/' + id + '/image';
@@ -177,7 +183,9 @@ export class ApiService {
       userRating: rating,
     };
 
-    let observable: Observable<any> = this.http.post(partCommentUrl, body, { headers: headers });
+    let observable: Observable<any> = this.http.post(partCommentUrl, body, {
+      headers: headers,
+    });
     observable.subscribe((data: any) => {
       part.comments.push(data);
     });
@@ -213,7 +221,9 @@ export class ApiService {
       '/comments/' +
       comment.id;
 
-    let observable: Observable<any> = this.http.delete(url, { headers: this.getBasicAuthHeader() })
+    let observable: Observable<any> = this.http.delete(url, {
+      headers: this.getBasicAuthHeader(),
+    });
     observable.subscribe(
       (data: any) => {
         console.log(data);
@@ -236,12 +246,17 @@ export class ApiService {
       });
   }
 
+  getPrivateConfiguration(id: string): Observable<any> {
+    const url = environment.api.baseUrl + '/computers/private/' + id;
+    return this.http.get(url, { headers: this.getBasicAuthHeader() });
+  }
+
   getPrivateConfigurations() {
-    if (!this.loggedIn) {
-      console.log('user not logged in');
-      return;
-    }
-    const url = environment.api.baseUrl + '/computers/private';
+    // if (!this.loggedIn) {
+    // console.log('user not logged in');
+    // return;
+    // }
+    const url = environment.api.baseUrl + '/computers/private/';
     this.http
       .get(url, { headers: this.getBasicAuthHeader() })
       .subscribe((data: any) => {
@@ -270,5 +285,14 @@ export class ApiService {
         part = null;
         this.getAllParts();
       });
+  }
+
+  getPublicConfigurations(): Observable<any> {
+    const url = environment.api.baseUrl + '/computers/public';
+    let observable: Observable<any> = this.http.get(url);
+    observable.subscribe((data: any) => {
+      this.publicConfigurations = data;
+    });
+    return observable;
   }
 }

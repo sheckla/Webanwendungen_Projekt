@@ -1,75 +1,77 @@
 <ion-content>
   <div class="container">
-
     <!-- Upload new Part -->
-    <ion-grid class="div-blur container">
-      <div class="container">
-        <h1>Create a new Part</h1>
-
-        <!-- Top Header - select part Type -->
-        <ion-list>
-          <ion-item>
-            <ion-select label="Select a Part Type" value="" interface="popover" label-placement="floating"
-              (ionChange)="this.partCreator.changePartType($event)">
-              <ion-select-option *ngFor=" let partType of this.partCreator.partTypesArr" value="{{partType}}">
-                {{partType}}
-              </ion-select-option>
-            </ion-select>
-          </ion-item>
-        </ion-list>
-
-        <!-- Main Part Input Field -->
-        <div *ngFor="let input of this.partCreator.list;let i=index">
-          <ion-grid>
-            <ion-row>
-              <ion-col> {{input.key}} </ion-col>
-              <ion-col>
-                <ion-input label="{{input.key}}" labelPlacement="stacked" [clearInput]="true" placeholder="Fill in here" value=""
-                  [(ngModel)]="this.partCreator.list[i].value"></ion-input>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </div>
-
-        <!-- Upload / Reset Button  -->
-        <ion-row>
-          <ion-col>
-            <ion-button (click)="this.partCreator.uploadPart()">Upload</ion-button>
-          </ion-col>
-          <ion-col>
-            <ion-button (click)="this.partCreator.resetSelection()">Reset</ion-button>
-          </ion-col>
-        </ion-row>
-      </div>
-    </ion-grid>
+    <!-- <app-part-add></app-part-add> -->
 
     <!-- Filter Part Type -->
+    <!-- TODO center checkboxes -->
     <form [formGroup]="partFilter" (ngSubmit)="this.submitFilter()">
-      <ion-input type="text" formControlName="manufacturerName" placeholder="AMD" label="Manufacturer Name"
-        labelPlacement="stacked" fill="outline" [clearInput]="true" errorText="Invalid Manufacturer Name"></ion-input>
-      <ion-input type="text" formControlName="partName" placeholder="FX 8350" label="Part Name" labelPlacement="stacked"
-        fill="outline" [clearInput]="true" errorText="Invalid part name"></ion-input>
       <ion-grid>
+        <!-- Row with 3 checkboxes -->
         <ion-row>
-          <ion-checkbox labelPlacement="end" formControlName="cpu">CPU</ion-checkbox>
+          <ion-col>
+            <ion-checkbox labelPlacement="end" formControlName="cpu"
+              >CPU ({{this.api.cpus.length}})</ion-checkbox
+            >
+          </ion-col>
+          <ion-col>
+            <ion-checkbox labelPlacement="end" formControlName="mainboard"
+              >Mainboard ({{this.api.motherboards.length}})</ion-checkbox
+            >
+          </ion-col>
+          <ion-col>
+            <ion-checkbox labelPlacement="end" formControlName="gpu"
+              >GPU ({{this.api.gpus.length}})</ion-checkbox
+            >
+          </ion-col>
         </ion-row>
+        <!-- Row with 3 checkboxes -->
         <ion-row>
-          <ion-checkbox labelPlacement="end" formControlName="mainboard">Mainboard</ion-checkbox>
+          <ion-col>
+            <ion-checkbox labelPlacement="end" formControlName="psu"
+              >Power Supply ({{this.api.psus.length}})</ion-checkbox
+            >
+          </ion-col>
+          <ion-col>
+            <ion-checkbox labelPlacement="end" formControlName="case"
+            >Case ({{this.api.cases.length}})</ion-checkbox
+            >
+          </ion-col>
+          <ion-col>
+            <ion-checkbox labelPlacement="end" formControlName="fan"
+            >Fan ({{this.api.fans.length}})</ion-checkbox
+            >
+          </ion-col>
         </ion-row>
+        <!-- Row with 2 Input fields -->
         <ion-row>
-          <ion-checkbox labelPlacement="end" formControlName="gpu">GPU</ion-checkbox>
-        </ion-row>
-        <ion-row>
-          <ion-checkbox labelPlacement="end" formControlName="psu">Power Supply</ion-checkbox>
-        </ion-row>
-        <ion-row>
-          <ion-checkbox labelPlacement="end" formControlName="case">Case</ion-checkbox>
-        </ion-row>
-        <ion-row>
-          <ion-checkbox labelPlacement="end" formControlName="fan">Fan</ion-checkbox>
+          <ion-col>
+            <ion-input
+              type="text"
+              formControlName="manufacturerName"
+              placeholder="AMD"
+              label="Manufacturer Name"
+              labelPlacement="stacked"
+              fill="outline"
+              [clearInput]="true"
+              errorText="Invalid Manufacturer Name"
+            ></ion-input>
+          </ion-col>
+          <ion-col>
+            <ion-input
+              type="text"
+              formControlName="partName"
+              placeholder="FX 8350"
+              label="Part Name"
+              labelPlacement="stacked"
+              fill="outline"
+              [clearInput]="true"
+              errorText="Invalid part name"
+            ></ion-input>
+          </ion-col>
         </ion-row>
       </ion-grid>
-      <ion-button (click)="this.submitFilter()"> Search</ion-button>
+      <!-- <ion-button (click)="this.submitFilter()"> Search</ion-button> -->
       <ion-button (click)="this.resetFilter()"> Reset</ion-button>
     </form>
     <!-- <ion-select label="Select a Part Type to filter" value="" interface="popover" label-placement="floating"
@@ -80,9 +82,14 @@
     </ion-select> -->
 
     <!-- *** Part List *** -->
+    <h3>{{this.filteredParts.length}} Results!</h3>
     <ion-grid>
       <ion-row>
-        <ion-col size="12" size-sm="4" *ngFor="let item of this.filteredParts; index as i">
+        <ion-col
+          size="12"
+          size-sm="4"
+          *ngFor="let item of this.filteredParts; index as i"
+        >
           <!-- 1/4 Part-Info card -->
           <!-- <div class="div-blur ion-margin"> -->
           <app-part-item [item]="item"></app-part-item>
@@ -91,5 +98,4 @@
       </ion-row>
     </ion-grid>
   </div>
-
 </ion-content>

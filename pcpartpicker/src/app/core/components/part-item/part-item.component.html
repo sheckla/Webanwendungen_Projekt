@@ -1,21 +1,25 @@
 <ion-card>
-
-
   <!-- View and Set Image -->
-  <app-image-upload [imgSrc]="this.api.getPartImageSrc(this.item)" [partId]="this.item.data.id"></app-image-upload>
+  <app-image-upload
+    [imgSrc]="this.api.getPartImageSrc(this.item)"
+    [partId]="this.item.data.id"
+  ></app-image-upload>
   <ion-card-header>
-
     <!-- Header: Part Name + Type -->
     <ion-card-title>
       <span>
-        {{this.item.data.partName}}
+        {{this.item.data.manufacturerName}} - {{ this.item.data.partName }}
       </span>
       <!-- Delete part Button -->
-      <ion-button class="ion-float-right" color="danger" (click)="this.api.deletePart(item)">
+      <ion-button
+        class="ion-float-right"
+        color="danger"
+        (click)="this.api.deletePart(item)"
+      >
         Delete<ion-icon slot="start" name="trash-outline"></ion-icon>
       </ion-button>
     </ion-card-title>
-    <ion-card-subtitle>{{this.item.data.type}}</ion-card-subtitle>
+    <ion-card-subtitle>{{ this.item.data.type }}</ion-card-subtitle>
   </ion-card-header>
 
   <ion-card-content>
@@ -23,7 +27,14 @@
       <!-- Part Info -->
       <ion-col>
         <div *ngFor="let pair of this.api.getPartValuePairs(item.data)">
-          {{pair.key}} - {{pair.value}}
+          <ion-row>
+            <ion-col class="error-text" size="6">
+              {{ pair.key }}
+            </ion-col>
+            <ion-col size="6">
+              {{ pair.value }}
+            </ion-col>
+          </ion-row>
         </div>
         <br />
 
