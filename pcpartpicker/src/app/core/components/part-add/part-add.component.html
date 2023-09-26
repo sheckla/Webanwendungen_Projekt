@@ -1,71 +1,91 @@
-<form
-  [formGroup]="this.partGroup"
-  (submit)="this.onSubmit()"
-  (reset)="this.onReset()"
->
-  <ion-grid class="div-blur container">
-    <div class="container">
-      <h1>Create a new Part</h1>
-
-      <!-- Select Part Type -->
-      <ion-list>
-        <ion-item>
-          <ion-select
-            label="Select a Part Type"
-            value=""
-            interface="popover"
-            label-placement="floating"
-            formControlName="partType"
-            (ionChange)="this.onSelectPartType($event)"
+<ion-modal trigger="open-modal-part-add">
+  <ng-template>
+    <!-- Modal Header -->
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Create New Part</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="cancelModal()">
+            <ion-icon slot="start" name="close-outline"></ion-icon
+            >Close</ion-button
           >
-            <ion-select-option
-              *ngFor="let partType of this.partCreator.partTypesArr"
-              value="{{ partType }}"
-            >
-              {{ partType }}
-            </ion-select-option>
-          </ion-select>
-        </ion-item>
-      </ion-list>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
 
-      <!-- Dynamic Form Input fields -->
-      <div
-        formGroupName="partInfo"
-        *ngFor="let input of this.questions; let i = index"
+    <!-- Modal Content -->
+    <ion-content>
+      <form
+        [formGroup]="this.partGroup"
+        (submit)="this.onSubmit()"
+        (reset)="this.onReset()"
       >
-        <ion-grid>
-          <ion-row>
-            <ion-col> {{ input.label }} </ion-col>
-            <ion-col>
-              <div [ngSwitch]="input.controlType">
-                <div *ngSwitchCase="'textbox'">
-                  <ion-input
-                    [label]="input.label"
-                    [placeholder]="input.placeholder"
-                    [value]="input.value"
-                    [formControlName]="input.key"
-                    labelPlacement="stacked"
-                    [clearInput]="true"
-                  ></ion-input>
-                </div>
-                <div *ngSwitchCase="'checkbox'">
-                  <ion-checkbox value="false">Checkbox</ion-checkbox>
-                </div>
-              </div>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </div>
+        <ion-grid class="">
+          <div class="">
+            <!-- Select Part Type -->
+            <ion-list>
+              <ion-item>
+                <ion-select
+                  label="Select a Part Type"
+                  value=""
+                  interface="popover"
+                  label-placement="floating"
+                  formControlName="partType"
+                  (ionChange)="this.onSelectPartType($event)"
+                >
+                  <ion-select-option
+                    *ngFor="let partType of this.partCreator.partTypesArr"
+                    value="{{ partType }}"
+                  >
+                    {{ partType }}
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-list>
 
-      <!-- Upload / Reset Button  -->
-      <ion-row>
-        <ion-col>
-          <ion-button type="submit">Upload</ion-button>
-        </ion-col>
-        <ion-col>
-          <ion-button type="reset">Reset</ion-button>
-        </ion-col>
-      </ion-row>
-    </div>
-  </ion-grid>
-</form>
+            <!-- Dynamic Form Input fields -->
+            <div
+              formGroupName="partInfo"
+              *ngFor="let input of this.questions; let i = index"
+            >
+              <ion-grid>
+                <ion-row>
+                  <ion-col> {{ input.label }} </ion-col>
+                  <ion-col>
+                    <div [ngSwitch]="input.controlType">
+                      <div *ngSwitchCase="'textbox'">
+                        <ion-input
+                          [type]="input.type"
+                          [label]="input.label"
+                          [placeholder]="input.placeholder"
+                          [value]="input.value"
+                          [formControlName]="input.key"
+                          labelPlacement="stacked"
+                          [clearInput]="true"
+                          errorText="Invalid"
+                        ></ion-input>
+                      </div>
+                      <div *ngSwitchCase="'checkbox'">
+                        <ion-checkbox value="false"></ion-checkbox>
+                      </div>
+                    </div>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </div>
+
+            <!-- Upload / Reset Button  -->
+            <ion-row>
+              <ion-col>
+                <ion-button type="submit">Upload</ion-button>
+              </ion-col>
+              <ion-col>
+                <ion-button type="reset">Reset</ion-button>
+              </ion-col>
+            </ion-row>
+          </div>
+        </ion-grid>
+      </form>
+    </ion-content>
+  </ng-template>
+</ion-modal>

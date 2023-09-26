@@ -1,22 +1,30 @@
+import { ValidatorFn, Validators } from "@angular/forms";
+
 export class FormQuestion<T> {
   value: T | undefined;
   key: string;
   label: string;
   controlType: string | 'textbox' | 'checkbox';
+  type: string | 'text' | 'number';
   placeholder: string;
+  validators: ValidatorFn[];
 
   constructor(options: {
     value?: T;
     key?: string;
     label?: string;
     controlType?: string;
-    placeholder?: string
+    type?: string;
+    placeholder?: string;
+    validators?: ValidatorFn[]
   }) {
     this.value = options.value;
     this.key = options.key || '';
     this.label = options.label || '';
     this.controlType = options.controlType || 'textbox';
+    this.type = options.type || 'text'
     this.placeholder = options.placeholder || '';
+    this.validators = options.validators || [];
   }
 }
 
@@ -94,3 +102,7 @@ export interface Pair {
   key?: any;
   value?: any;
 }
+
+// TODO RAM
+export type PartType = 'CASE' | 'CPU' | 'GPU' | 'FAN' | 'MOTHERBOARD' | 'PSU' | 'RAM';
+export const partList: PartType[] = ['CASE', 'CPU', 'GPU', 'FAN', 'MOTHERBOARD', 'PSU', 'RAM'];

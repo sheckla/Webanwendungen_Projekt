@@ -15,6 +15,7 @@
         class="ion-float-right"
         color="danger"
         (click)="this.api.deletePart(item)"
+        [disabled]="this.user.role !== 'admin'"
       >
         Delete<ion-icon slot="start" name="trash-outline"></ion-icon>
       </ion-button>

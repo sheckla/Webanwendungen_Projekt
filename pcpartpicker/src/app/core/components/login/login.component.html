@@ -1,4 +1,3 @@
-<!-- <app-login></app-login> -->
 <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
   <ng-template>
     <ion-header>
@@ -13,11 +12,13 @@
         </ion-title>
         <!-- Logged in -->
         <ion-title *ngIf="this.user.isLoggedIn && !this.registerFormActive">
-          <span>Logged in as: {{this.user.username}}</span>
+          <span>Logged in as: {{ this.user.username }}</span>
         </ion-title>
         <ion-buttons slot="end">
           <ion-button (click)="cancel()">
-            <ion-icon slot="start" name="close-outline"></ion-icon>Close</ion-button>
+            <ion-icon slot="start" name="close-outline"></ion-icon
+            >Close</ion-button
+          >
         </ion-buttons>
         <!-- <ion-buttons slot="end">
             <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
@@ -26,18 +27,38 @@
     </ion-header>
     <ion-content class="ion-padding">
       <!-- Login -->
-      <form (ngSubmit)="login()" [formGroup]="loginForm" *ngIf="!this.user.isLoggedIn && !this.registerFormActive"
-        class="ion-padding div-blur">
+      <form
+        (ngSubmit)="login()"
+        [formGroup]="loginForm"
+        *ngIf="!this.user.isLoggedIn && !this.registerFormActive"
+        class="ion-padding div-blur"
+      >
         <ion-grid>
           <ion-row class="ion-margin">
             <!-- Username -->
-            <ion-input type="text" formControlName="loginName" placeholder="Username" label="Name" labelPlacement="stacked"
-              fill="outline" [clearInput]="true" errorText="Invalid Username"></ion-input>
+            <ion-input
+              type="text"
+              formControlName="loginName"
+              placeholder="Username"
+              label="Name"
+              labelPlacement="stacked"
+              fill="outline"
+              [clearInput]="true"
+              errorText="Invalid Username"
+            ></ion-input>
           </ion-row>
           <ion-row class="ion-margin">
             <!-- Password -->
-            <ion-input type="password" formControlName="loginPassword" placeholder="Password" label="Password"
-              labelPlacement="stacked" fill="outline" [clearInput]="true" errorText="Invalid Password"></ion-input>
+            <ion-input
+              type="password"
+              formControlName="loginPassword"
+              placeholder="Password"
+              label="Password"
+              labelPlacement="stacked"
+              fill="outline"
+              [clearInput]="true"
+              errorText="Invalid Password"
+            ></ion-input>
           </ion-row>
           <ion-row class="ion-margin">
             <ion-col>
@@ -49,7 +70,9 @@
           </ion-row>
           <ion-row class="ion-text-center">
             <ion-col>
-              <span (click)="toggleRegister()" class="ion-text-center">Register here!</span>
+              <span (click)="toggleRegister()" class="ion-text-center"
+                >Register here!</span
+              >
             </ion-col>
           </ion-row>
         </ion-grid>
@@ -58,28 +81,54 @@
       <!-- Logged in -->
       <div *ngIf="this.user.isLoggedIn" class="ion-padding div-blur">
         <h2>Welcome!</h2>
-        <span>Your role is: {{this.user.role}}</span><br>
-        <span *ngIf="this.user.role === 'user'">As a registered user you can create custom configurations.</span>
-        <span *ngIf="this.user.role === 'moderator'">As a moderator you can delete comments.</span>
-        <span *ngIf="this.user.role === 'admin'">As an admin you can upload new parts and add images.</span>
-        <br>
+        <span>Your role is: {{ this.user.role }}</span
+        ><br />
+        <span *ngIf="this.user.role === 'user'"
+          >As a registered user you can create custom configurations.</span
+        >
+        <span *ngIf="this.user.role === 'moderator'"
+          >As a moderator you can delete comments.</span
+        >
+        <span *ngIf="this.user.role === 'admin'"
+          >As an admin you can upload new parts and add images.</span
+        >
+        <br />
         <ion-button (click)="logout()" color="danger">Logout</ion-button>
       </div>
 
       <!-- Register -->
       <div *ngIf="this.registerFormActive" class="ion-padding div-blur">
-        <form (ngSubmit)="register()" [formGroup]="registerForm" *ngIf="!this.user.isLoggedIn && this.registerFormActive">
+        <form
+          (ngSubmit)="register()"
+          [formGroup]="registerForm"
+          *ngIf="!this.user.isLoggedIn && this.registerFormActive"
+        >
           <ion-grid>
             <ion-row class="ion-margin">
               <!-- Username -->
-              <ion-input type="text" formControlName="registerName" placeholder="Decide on a username" label="Name"
-                labelPlacement="stacked" fill="outline" [clearInput]="true" errorText="Invalid Username"></ion-input>
+              <ion-input
+                type="text"
+                formControlName="registerName"
+                placeholder="Decide on a username"
+                label="Name"
+                labelPlacement="stacked"
+                fill="outline"
+                [clearInput]="true"
+                errorText="Invalid Username"
+              ></ion-input>
             </ion-row>
             <ion-row class="ion-margin">
               <!-- Password -->
-              <ion-input type="password" formControlName="registerPassword" placeholder="Choose a secure password"
-                label="Password" labelPlacement="stacked" fill="outline" [clearInput]="true"
-                errorText="Invalid Password"></ion-input>
+              <ion-input
+                type="password"
+                formControlName="registerPassword"
+                placeholder="Choose a secure password"
+                label="Password"
+                labelPlacement="stacked"
+                fill="outline"
+                [clearInput]="true"
+                errorText="Invalid Password"
+              ></ion-input>
             </ion-row>
             <ion-row class="ion-margin">
               <ion-col>
@@ -91,7 +140,9 @@
             </ion-row>
             <ion-row class="ion-text-center">
               <ion-col>
-                <span (click)="toggleRegister()" class="ion-text-center">Back to login</span>
+                <span (click)="toggleRegister()" class="ion-text-center"
+                  >Back to login</span
+                >
               </ion-col>
             </ion-row>
           </ion-grid>

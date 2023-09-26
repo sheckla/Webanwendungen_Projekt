@@ -41,6 +41,7 @@ export class DashboardPage implements OnInit {
     psu: new FormControl(null, null),
     case: new FormControl(null, null),
     fan: new FormControl(null, null),
+    ram: new FormControl(null, null),
     manufacturerName: new FormControl(null, null),
     partName: new FormControl(null, null),
   });
@@ -91,6 +92,9 @@ export class DashboardPage implements OnInit {
     }
     if (filter.fan) {
       parts = parts.concat(this.api.fans);
+    }
+    if (filter.ram) {
+      parts = parts.concat(this.api.rams);
     }
 
     // Filter for part name

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment.prod';
 import { Observable, map, of, tap } from 'rxjs';
-import { Pair } from '../part-types';
+import { Pair, PartType } from '../part-types';
 import { UserService } from '../user/user.service';
 
 @Injectable({
@@ -20,6 +20,7 @@ export class ApiService {
   public fans: any[] = [];
   public motherboards: any[] = [];
   public psus: any[] = [];
+  public rams: any[] = [];
 
   constructor(private http: HttpClient, private user: UserService) {}
 
@@ -33,16 +34,15 @@ export class ApiService {
     return header;
   }
 
-  getAllParts(): Observable<any> | null {
+  getAllParts(): Observable<any> {
     const allPartsUrl = environment.api.baseUrl + '/pc-parts/all-parts';
-    console.log('getting parts from ', allPartsUrl);
 
     if (this.allParts().length > 0) {
-      return null;
+      return of();
     }
 
     return this.http.get(allPartsUrl).pipe(
-      map((data: any) => {
+      tap((data: any) => {
         data.forEach((element: any) => {
           switch (element.data.type) {
             case 'CASE':
@@ -63,12 +63,26 @@ export class ApiService {
             case 'MOTHERBOARD':
               this.motherboards.push(element);
               break;
+            case 'RAM':
+              this.rams.push(element);
+              break;
             default:
               break;
           }
         });
       })
     );
+  }
+
+  private forceRefreshAllParts(): Observable<any> {
+    console.log('[FORCE REFRESH] all Parts ');
+    this.cases = [];
+    this.cpus = [];
+    this.gpus = [];
+    this.fans = [];
+    this.psus = [];
+    this.motherboards = [];
+    return this.getAllParts();
   }
 
   allParts(): any[] {
@@ -236,14 +250,17 @@ export class ApiService {
     return observable;
   }
 
-  createConfiguration(name: string) {
+  createConfiguration(name: string): Observable<any> {
     const url = environment.api.baseUrl + '/computers/private/create-new-pc';
-    this.http
-      .put(url, name, { headers: this.getBasicAuthHeader() })
-      .subscribe((data: any) => {
-        console.log(data);
-        this.getPrivateConfigurations();
-      });
+    const observable: Observable<any> = this.http.put(url, name, {
+      headers: this.getBasicAuthHeader(),
+    });
+    console.log('onCreate');
+    observable.subscribe((data: any) => {
+      console.log(data);
+      this.getPrivateConfigurations();
+    });
+    return observable;
   }
 
   getPrivateConfiguration(id: string): Observable<any> {
@@ -265,26 +282,34 @@ export class ApiService {
       });
   }
 
-  postPart(part: any, type: string) {
+  postPart(part: any, type: string): Observable<any> {
     const url = environment.api.baseUrl + '/pc-parts/' + type.toLowerCase();
     const headers = this.getBasicAuthHeader();
-    this.http
-      .put(url, part, { headers: headers, responseType: 'text' })
-      .subscribe((data: any) => {
-        this.getAllParts();
-      });
+    return this.http
+      .put(url, part, {
+        headers: headers,
+        responseType: 'text',
+      })
+      .pipe(
+        tap((data: any) => {
+          this.forceRefreshAllParts();
+          // this.getAllParts();
+        })
+      );
   }
 
-  deletePart(part: any) {
+  deletePart(part: any): Observable<any> {
     const url = environment.api.baseUrl + '/pc-parts/' + part.data.id;
-    const headers = this.getBasicAuthHeader();
     console.log('deleting at', url);
-    this.http
+    return this.http
       .delete(url, { headers: this.getBasicAuthHeader() })
-      .subscribe((data: any) => {
-        part = null;
-        this.getAllParts();
-      });
+      .pipe(tap((data: any) => {
+        this.forceRefreshAllParts();
+      }));
+    // .subscribe((data: any) => {
+    // part = null;
+    // this.getAllParts();
+    // });
   }
 
   getPublicConfigurations(): Observable<any> {
@@ -292,6 +317,60 @@ export class ApiService {
     let observable: Observable<any> = this.http.get(url);
     observable.subscribe((data: any) => {
       this.publicConfigurations = data;
+    });
+    return observable;
+  }
+
+  setPrivateConfigurationVisibility(
+    id: string,
+    isPublic: boolean
+  ): Observable<any> {
+    const url =
+      environment.api.baseUrl + '/computers/private/' + id + '/visibility';
+    const body = {
+      isPublic: isPublic,
+    };
+    console.log(url, body);
+    let observable: Observable<any> = this.http.post(url, body, {
+      headers: this.getBasicAuthHeader(),
+    });
+    observable.pipe(
+      tap((data: any) => {
+        console.log(data);
+      })
+    );
+    return observable;
+  }
+
+  setPrivateConfigurationPart(
+    configurationId: string,
+    partType: PartType,
+    partId: string
+  ) {
+    const url =
+      environment.api.baseUrl +
+      '/computers/private/' +
+      configurationId +
+      '/pc-parts/' +
+      partType;
+    console.log(url, partId);
+    const observable: Observable<any> = this.http.post(url, partId, {
+      headers: this.getBasicAuthHeader(),
+    });
+    observable.subscribe((data: any) => {
+      console.log(data);
+    });
+    return observable;
+  }
+
+  deletePrivateConfiguration(id: string): Observable<any> {
+    const url = environment.api.baseUrl + '/computers/private/' + id;
+    console.log(url);
+    const observable: Observable<any> = this.http.delete(url, {
+      headers: this.getBasicAuthHeader(),
+    });
+    observable.subscribe((data: any) => {
+      console.log(data);
     });
     return observable;
   }

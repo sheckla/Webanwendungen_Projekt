@@ -1,13 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { IonModal, IonicModule } from '@ionic/angular';
+import { ApiService } from 'src/app/services/api/api.service';
 import { PartCreatorService } from 'src/app/services/part-creator/part-creator.service';
 import { FormQuestion } from 'src/app/services/part-types';
 import { ToastService } from 'src/app/services/toast/toast.service';
@@ -20,6 +22,7 @@ import { ToastService } from 'src/app/services/toast/toast.service';
   imports: [CommonModule, IonicModule, FormsModule, ReactiveFormsModule],
 })
 export class PartAddComponent implements OnInit {
+  @ViewChild(IonModal) modal?: IonModal;
   public partGroup: FormGroup = new FormGroup({
     partType: new FormControl(null, [Validators.required]),
     partInfo: new FormGroup({}),
@@ -28,11 +31,14 @@ export class PartAddComponent implements OnInit {
 
   constructor(
     public partCreator: PartCreatorService,
-    public toast: ToastService
+    public toast: ToastService,
+    public api: ApiService
   ) {}
 
-  ngOnInit() {
-    // this.addGroup = this.toFormGroup([]);
+  ngOnInit() {}
+
+  cancelModal() {
+    this.modal?.dismiss(null, 'cancel');
   }
 
   onSelectPartType(event: Event) {
@@ -46,8 +52,9 @@ export class PartAddComponent implements OnInit {
 
   toFormGroup(questions: any[]) {
     const group: any = {};
-    questions.forEach((question: any) => {
+    questions.forEach((question: FormQuestion<any>) => {
       group[question.key] = new FormControl('', null);
+      (group[question.key] as FormControl).addValidators(question.validators);
     });
     // if (this.addGroup) {
     //   if (this.addGroup.controls['partType']) {
@@ -68,14 +75,17 @@ export class PartAddComponent implements OnInit {
   }
 
   public onSubmit() {
-    console.log(this.partGroup.value);
+    this.partGroup.updateValueAndValidity();
+    this.partGroup.markAllAsTouched();
     if (this.partGroup.valid) {
       let partInfo: any | null = this.partGroup.get('partInfo')?.value;
       let partType: string | null = this.partGroup.get('partType')?.value;
       if (partInfo && partType) {
-        console.log(partInfo, partType);
-        this.partCreator.uploadPart(partInfo, partType);
-        this.toast.present('top', 'Part created!');
+        console.log('valid', partInfo, partType);
+        this.api.postPart(partInfo, partType).subscribe((data: any) => {
+          console.log('got post in part-add');
+          this.toast.present('top', 'Part created!');
+        });
       }
     }
   }

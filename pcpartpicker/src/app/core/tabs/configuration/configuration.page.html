@@ -1,82 +1,189 @@
 <ion-content>
   <div class="container">
     <div style="height: 20px"></div>
-    <ion-input
-      type="text"
-      placeholder="Rare Gem Build"
-      label="Configuration Name"
-      labelPlacement="stacked"
-      fill="outline"
-      [clearInput]="true"
-      errorText="Invalid configuration name"
-    ></ion-input>
-    <!-- <ion-button (click)="this.api.createConfiguration(commentFormText.value)"
-    >create config</ion-button
-  > -->
-    <!-- <ion-button (click)="this.api.getPrivateConfigurations()"
-    >create config</ion-button
-  > -->
 
-    <!-- Select from private configuration -->
-    <form [formGroup]="selectGroup">
+    <!-- Create Configuration Form -->
+    <form
+      [formGroup]="this.createConfigurationGroup"
+      (submit)="this.onCreateConfiguration()"
+    >
+      <ion-row>
+        <ion-col>
+          <ion-input
+            type="text"
+            placeholder="Rare Gem Build"
+            label="Configuration Name"
+            labelPlacement="stacked"
+            fill="outline"
+            [clearInput]="true"
+            errorText="Invalid configuration name"
+            formControlName="name"
+          ></ion-input>
+        </ion-col>
+        <ion-col>
+          <ion-button type="submit">create config</ion-button>
+        </ion-col>
+      </ion-row>
+    </form>
+    <ion-button (click)="this.onResetSelection()">Reset Selection</ion-button>
+
+    <!-- *** CONFIGURATOR ***  -->
+    <form [formGroup]="configurationGroup" (submit)="this.onSubmitParts()">
       <ion-list>
         <ion-item>
+          <!-- Select from private configurations -->
           <ion-select
             label="Select a Configuration"
             interface="popover"
             label-placement="floating"
             [cancelText]="true"
-            formControlName="configurationName"
+            formControlName="id"
           >
             <ion-select-option
               *ngFor="let configuration of this.api.privateConfigurations"
               value="{{configuration.data.id}}"
             >
               {{configuration.data.pcName}}
+              <span *ngIf="configuration.data.isPublic; else elseBlock"
+                >(public)</span
+              >
+              <ng-template #elseBlock><span>(private)</span></ng-template>
             </ion-select-option>
           </ion-select>
         </ion-item>
       </ion-list>
-    </form>
 
-    <!-- Display selected configuration -->
-    <div *ngIf="this.configuration">
-      <h2>Build Name: {{this.configuration.pcName}}</h2>
-    </div>
-    <ion-row>
-      <!-- Part Info -->
-      <ion-col>
-        <!-- <div *ngFor="let pair of this.api.getPartValuePairs(this.item.data)">
-            <ion-row>
-              <ion-col class="error-text" size="6">
-                {{ pair.key }}
-              </ion-col>
-              <ion-col size="6">
-                {{ pair.value }}
-              </ion-col>
-            </ion-row>
-          </div> -->
-        <br />
-        <form [formGroup]="this.partGroup">
+      <!-- Display selected configuration -->
+      <div *ngIf="this.configuration">
+        <!-- Configuration Meta-data -->
+        <h2>
+          Build Name: {{this.configuration.pcName}}, configured by
+          {{this.configuration.pcOwner}}
+        </h2>
+        <h3>Comments: {{this.configuration.commentAmount}}</h3>
+        <h3>Rating: {{this.configuration.userRating}} / 5</h3>
+      </div>
+
+      <!-- Configuration part info -->
+      <ion-row formGroupName="partGroup">
+        <ion-col>
+          <!-- Public visibility -->
+          <ion-toggle formControlName="public">Public</ion-toggle>
+
+          <!-- CPU -->
           <ion-select
             label="Select a CPU"
             interface="popover"
             label-placement="floating"
             [cancelText]="true"
-            formControlName="cpu"
+            formControlName="cpuId"
           >
             <ion-select-option
               *ngFor="let cpu of this.api.cpus"
-              value="{{cpu.data.partName}}"
+              value="{{cpu.data.id}}"
             >
               {{cpu.data.partName}}
             </ion-select-option>
           </ion-select>
-        </form>
-        <!-- Comment Listing -->
-        <!-- <app-comment-add [item]="this.item"></app-comment-add> -->
-        <!-- <app-comment-list [part]="this.item"></app-comment-list> -->
-      </ion-col>
-    </ion-row>
+
+          <!-- Motherboard -->
+          <ion-select
+            label="Select a Motherboard"
+            interface="popover"
+            label-placement="floating"
+            [cancelText]="true"
+            formControlName="motherboardId"
+          >
+            <ion-select-option
+              *ngFor="let motherboard of this.api.motherboards"
+              value="{{motherboard.data.id}}"
+            >
+              {{motherboard.data.partName}}
+            </ion-select-option>
+          </ion-select>
+
+          <!-- Case -->
+          <ion-select
+            label="Select a Case"
+            interface="popover"
+            label-placement="floating"
+            [cancelText]="true"
+            formControlName="caseId"
+          >
+            <ion-select-option
+              *ngFor="let case of this.api.cases"
+              value="{{case.data.id}}"
+            >
+              {{case.data.partName}}
+            </ion-select-option>
+          </ion-select>
+
+          <!-- Graphics Card -->
+          <ion-select
+            label="Select a Graphics Card"
+            interface="popover"
+            label-placement="floating"
+            [cancelText]="true"
+            formControlName="gpuId"
+          >
+            <ion-select-option
+              *ngFor="let gpu of this.api.gpus"
+              value="{{gpu.data.id}}"
+            >
+              {{gpu.data.partName}}
+            </ion-select-option>
+          </ion-select>
+
+          <!-- Fan (CPU-Cooler) -->
+          <ion-select
+            label="Select a CPU-Cooler"
+            interface="popover"
+            label-placement="floating"
+            [cancelText]="true"
+            formControlName="fanId"
+          >
+            <ion-select-option
+              *ngFor="let fan of this.api.fans"
+              value="{{fan.data.id}}"
+            >
+              {{fan.data.partName}}
+            </ion-select-option>
+          </ion-select>
+
+          <!-- PSU -->
+          <ion-select
+            label="Select a PSU"
+            interface="popover"
+            label-placement="floating"
+            [cancelText]="true"
+            formControlName="psuId"
+          >
+            <ion-select-option
+              *ngFor="let psu of this.api.psus"
+              value="{{psu.data.id}}"
+            >
+              {{psu.data.partName}}
+            </ion-select-option>
+          </ion-select>
+
+          <!-- Submit/Save -->
+          <ion-button [disabled]="!this.configuration" type="submit"
+            >Save</ion-button
+          >
+
+          <!-- Delete Configuration -->
+          <!-- <ion-button
+            class="ion-float-right"
+            [disabled]="!this.configuration"
+            (click)="onDeleteConfiguration()"
+            color="danger"
+            >Delete Permanently</ion-button
+          > -->
+          <!-- Comment Listing -->
+          <!-- <app-comment-add [item]="this.item"></app-comment-add> -->
+          <!-- <app-comment-list [part]="this.item"></app-comment-list> -->
+        </ion-col>
+      </ion-row>
+    </form>
   </div>
 </ion-content>
