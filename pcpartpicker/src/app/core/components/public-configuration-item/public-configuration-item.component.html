@@ -13,7 +13,7 @@
     <ion-row>
       <!-- Part Info -->
       <ion-col>
-        <!-- <div *ngFor="let pair of this.api.getPartValuePairs(this.item.data)">
+        <div *ngFor="let pair of this.api.getPartValuePairs(this.item.data)">
           <ion-row>
             <ion-col class="error-text" size="6">
               {{ pair.key }}
@@ -22,14 +22,13 @@
               {{ pair.value }}
             </ion-col>
           </ion-row>
-        </div> -->
-
+        </div>
       </ion-col>
     </ion-row>
     <ion-row>
       <!-- Comment Listing -->
-      <!-- <app-comment-add [item]="this.item"></app-comment-add> -->
-      <!-- <app-comment-list [part]="this.item"></app-comment-list> -->
+      <app-comment-add [item]="this.item" type="configuration"></app-comment-add>
+      <app-comment-list type="configuration" [part]="this.item"></app-comment-list>
     </ion-row>
   </ion-card-content>
 </ion-card>

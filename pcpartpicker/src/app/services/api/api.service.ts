@@ -165,7 +165,6 @@ export class ApiService {
 
   getPartImageSrc(part: any) {
     let src = '../../assets/icon/favicon.png';
-    // let src = '../../assets/img/poke-ball.png';
     if (part.imgSrc) {
       return part.imgSrc;
     }
@@ -207,6 +206,22 @@ export class ApiService {
     return observable;
   }
 
+  postConfigurationComment(part: any, text: any, rating: any): Observable<any> {
+    // Lol @ API path
+    const url =
+      environment.api.baseUrl + '/computers/computers/' + part.data.id + '/comment';
+    const header = this.getBasicAuthHeader();
+    const body = {
+      commentary: text,
+      userRating: rating,
+    };
+    return this.http
+      .post(url, body, { headers: header })
+      .pipe(tap((data: any) => {
+        console.log('posted configuration comment', data);
+      }));
+  }
+
   getPartComments(part: any): any[] {
     if (part.comments) {
       return part.comments;
@@ -218,7 +233,7 @@ export class ApiService {
   /*
    * assigns comments[] attribute to part
    */
-  refreshPartComments(part: any): void {
+  private refreshPartComments(part: any): void {
     const url =
       environment.api.baseUrl + '/pc-parts/' + part.data.id + '/comments';
     this.http.get(url).subscribe((data: any) => {
@@ -227,10 +242,50 @@ export class ApiService {
     });
   }
 
+  getPublicConfigurationComments(part: any): Observable<any[]> {
+    if (part.comments) {
+      return part.comments;
+    }
+    return this.refreshPublicConfigurationComments(part).pipe(tap((data: any) => {
+      console.log('got public config comments', data);
+      return data;
+    }));
+    // return part.comments;
+  }
+
+  private refreshPublicConfigurationComments(part: any) {
+    const url =
+      environment.api.baseUrl + '/computers/' + part.data.id + '/comments';
+    return this.http.get(url)
+  }
+
   deletePartComment(part: any, comment: any): Observable<any> {
     const url =
       environment.api.baseUrl +
       '/pc-parts/' +
+      comment.parentId +
+      '/comments/' +
+      comment.id;
+
+    let observable: Observable<any> = this.http.delete(url, {
+      headers: this.getBasicAuthHeader(),
+    });
+    observable.subscribe(
+      (data: any) => {
+        console.log(data);
+        this.refreshPartComments(part);
+      },
+      (error: any) => {
+        console.log('error while deleting comment', error.status);
+      }
+    );
+    return observable;
+  }
+
+  deleteConfigurationComment(part: any, comment: any): Observable<any> {
+    const url =
+      environment.api.baseUrl +
+      '/computers/' +
       comment.parentId +
       '/comments/' +
       comment.id;
@@ -302,11 +357,11 @@ export class ApiService {
   deletePart(part: any): Observable<any> {
     const url = environment.api.baseUrl + '/pc-parts/' + part.data.id;
     console.log('deleting at', url);
-    return this.http
-      .delete(url, { headers: this.getBasicAuthHeader() })
-      .pipe(tap((data: any) => {
+    return this.http.delete(url, { headers: this.getBasicAuthHeader() }).pipe(
+      tap((data: any) => {
         this.forceRefreshAllParts();
-      }));
+      })
+    );
     // .subscribe((data: any) => {
     // part = null;
     // this.getAllParts();
