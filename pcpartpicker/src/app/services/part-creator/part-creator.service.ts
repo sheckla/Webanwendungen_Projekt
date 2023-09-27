@@ -111,92 +111,92 @@ export class PartCreatorService implements OnInit {
        *  CPU
        *****************************/
       case 'CPU':
-        questions.push(
-          new FormQuestion<any>({
-            value: '',
-            key: 'cpuCores',
-            label: 'CPU Core Count',
-            placeholder: '16',
-            controlType: 'textbox',
-            type: 'number',
-            validators: [Validators.required, Validators.min(1)],
-          })
-        );
-        questions.push(
-          new FormQuestion<any>({
-            value: '',
-            key: 'cpuThreads',
-            label: 'CPU Thread Count',
-            placeholder: '32',
-            controlType: 'textbox',
-            type: 'number',
-            validators: [Validators.required, Validators.min(1)],
-          })
-        );
-        questions.push(
-          new FormQuestion<any>({
-            value: '',
-            key: 'maxTurboFrequencyInGHz',
-            label: 'Turbo Frequency (GHz)',
-            placeholder: '5.8',
-            controlType: 'textbox',
-            type: 'number',
-            validators: [Validators.required, Validators.min(0.0)],
-          })
-        );
-        questions.push(
-          new FormQuestion<any>({
-            value: '',
-            key: 'defaultFrequencyInGHz',
-            label: 'Default Frequency (GHz)',
-            placeholder: '5.5',
-            controlType: 'textbox',
-            type: 'number',
-            validators: [Validators.required, Validators.min(0.0)],
-          })
-        );
-        questions.push(
-          new FormQuestion<any>({
-            value: '',
-            key: 'TDPinWattage',
-            label: 'TDP (Watt)',
-            placeholder: '125',
-            controlType: 'textbox',
-            type: 'number',
-            validators: [Validators.required, Validators.min(0.0)],
-          })
-        );
-        questions.push(
-          new FormQuestion<any>({
-            value: '',
-            key: 'chipGeneration',
-            label: 'Generation',
-            placeholder: '4',
-            controlType: 'textbox',
-            type: 'number',
-            validators: [Validators.required, Validators.min(0.0)],
-          })
-        );
-        questions.push(
-          new FormQuestion<any>({
-            value: '',
-            key: 'supportedRAMType',
-            label: 'Supported RAM',
-            placeholder: 'DDR5',
-            controlType: 'textbox',
-            validators: [Validators.required],
-          })
-        );
-        questions.push(
-          new FormQuestion<any>({
-            value: '',
-            key: 'socket',
-            label: 'Socket Type',
-            placeholder: 'AM5',
-            controlType: 'textbox',
-            validators: [Validators.required],
-          })
-        );
+        // questions.push(
+        //   new FormQuestion<any>({
+        //     value: '',
+        //     key: 'cpuCores',
+        //     label: 'CPU Core Count',
+        //     placeholder: '16',
+        //     controlType: 'textbox',
+        //     type: 'number',
+        //     validators: [Validators.required, Validators.min(1)],
+        //   })
+        // );
+        // questions.push(
+        //   new FormQuestion<any>({
+        //     value: '',
+        //     key: 'cpuThreads',
+        //     label: 'CPU Thread Count',
+        //     placeholder: '32',
+        //     controlType: 'textbox',
+        //     type: 'number',
+        //     validators: [Validators.required, Validators.min(1)],
+        //   })
+        // );
+        // questions.push(
+        //   new FormQuestion<any>({
+        //     value: '',
+        //     key: 'maxTurboFrequencyInGHz',
+        //     label: 'Turbo Frequency (GHz)',
+        //     placeholder: '5.8',
+        //     controlType: 'textbox',
+        //     type: 'number',
+        //     validators: [Validators.required, Validators.min(0.0)],
+        //   })
+        // );
+        // questions.push(
+        //   new FormQuestion<any>({
+        //     value: '',
+        //     key: 'defaultFrequencyInGHz',
+        //     label: 'Default Frequency (GHz)',
+        //     placeholder: '5.5',
+        //     controlType: 'textbox',
+        //     type: 'number',
+        //     validators: [Validators.required, Validators.min(0.0)],
+        //   })
+        // );
+        // questions.push(
+        //   new FormQuestion<any>({
+        //     value: '',
+        //     key: 'TDPinWattage',
+        //     label: 'TDP (Watt)',
+        //     placeholder: '125',
+        //     controlType: 'textbox',
+        //     type: 'number',
+        //     validators: [Validators.required, Validators.min(0.0)],
+        //   })
+        // );
+        // questions.push(
+        //   new FormQuestion<any>({
+        //     value: '',
+        //     key: 'chipGeneration',
+        //     label: 'Generation',
+        //     placeholder: '4',
+        //     controlType: 'textbox',
+        //     type: 'number',
+        //     validators: [Validators.required, Validators.min(0.0)],
+        //   })
+        // );
+        // questions.push(
+        //   new FormQuestion<any>({
+        //     value: '',
+        //     key: 'supportedRAMType',
+        //     label: 'Supported RAM',
+        //     placeholder: 'DDR5',
+        //     controlType: 'textbox',
+        //     validators: [Validators.required],
+        //   })
+        // );
+        // questions.push(
+        //   new FormQuestion<any>({
+        //     value: '',
+        //     key: 'socket',
+        //     label: 'Socket Type',
+        //     placeholder: 'AM5',
+        //     controlType: 'textbox',
+        //     validators: [Validators.required],
+        //   })
+        // );
         break;
 
       /*****************************

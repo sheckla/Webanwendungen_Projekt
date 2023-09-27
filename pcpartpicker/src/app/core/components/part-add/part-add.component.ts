@@ -86,6 +86,9 @@ export class PartAddComponent implements OnInit {
         this.api.postPart(partInfo, partType).subscribe((data: any) => {
           console.log('got post in part-add');
           this.toast.present('top', 'Part created!');
+          this.api.getAllParts().subscribe((data: any) => {
+            console.log('hi from part add');
+          });
         });
       }
     }

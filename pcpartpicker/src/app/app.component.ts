@@ -2,6 +2,8 @@ import { Component, EnvironmentInjector, inject } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { NavigationbarComponent } from "./core/components/navigationbar/navigationbar.component";
+import { UserService } from './services/user/user.service';
+import { ApiService } from './services/api/api.service';
 
 @Component({
     selector: 'app-root',
@@ -13,5 +15,11 @@ import { NavigationbarComponent } from "./core/components/navigationbar/navigati
 export class AppComponent {
   public environmentInjector = inject(EnvironmentInjector);
 
-  constructor() {}
+  constructor(private user: UserService, private api: ApiService) {
+    this.user.login('admin', 'admin').subscribe((data: any) => {
+      console.log('login happened');
+      this.api.getPrivateConfigurations();
+      this.api.getAllParts()?.subscribe((data: any) => {});
+    });
+  }
 }

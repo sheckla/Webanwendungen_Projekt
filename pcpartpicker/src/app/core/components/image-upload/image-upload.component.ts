@@ -3,6 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { ApiService } from '../../../services/api/api.service';
 import { UserService } from 'src/app/services/user/user.service';
+import { ToastService } from 'src/app/services/toast/toast.service';
 
 @Component({
   selector: 'app-image-upload',
@@ -17,7 +18,8 @@ export class ImageUploadComponent implements OnInit {
   private selectedImageFile?: File;
 
   constructor(private api: ApiService,
-    public user: UserService) { }
+    public user: UserService,
+    public toast: ToastService) { }
 
   ngOnInit() { }
 
@@ -38,6 +40,13 @@ export class ImageUploadComponent implements OnInit {
       console.error('no valid partId');
       return;
     }
-    this.api.uploadPartImage(this.partId, this.selectedImageFile);
+    this.api.uploadPartImage(this.partId, this.selectedImageFile).subscribe((data: any) => {
+      this.toast.present('top', 'Image uploaded!')
+      console.log(data);
+      if (this.partId) {
+        this.imgSrc = this.api.getPartImageLink(this.partId);
+        console.log('setting image');
+      }
+    });
   }
 }

@@ -32,7 +32,7 @@
 
 ion-content {
     // --background: rgba(255, 255, 255, 0.05)url('./assets/img/svg/triangles.png') no-repeat center center / cover;
-    // --background: rgba(255, 255, 255, 0.05)url('./assets/img/svg/subtle-prism.svg') no-repeat center center / cover;
+    --background: rgba(255, 255, 255, 0.05)url('./assets/img/svg/subtle-prism.svg') no-repeat center center / cover;
     background-repeat: no-repeat;
     background-size: cover;
     background-position-y: -130px;
@@ -82,7 +82,7 @@ ion-content {
 
 /* ==== Welcoming Header ==== */
 .div-blur {
-    background-color: rgba(255, 255, 255, 0.11) !important;
+    background-color: rgba(39, 39, 39, 0.301) !important;
     backdrop-filter: blur(25px);
     border-radius: 2em 2em 2em 2em;
     background-image: none;

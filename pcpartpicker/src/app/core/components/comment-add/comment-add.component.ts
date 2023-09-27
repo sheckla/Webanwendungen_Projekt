@@ -30,7 +30,7 @@ export class CommentAddComponent implements OnInit {
     ]),
   });
 
-  constructor(public api: ApiService, public toast: ToastService) {}
+  constructor(public api: ApiService, public toast: ToastService) { }
 
   ngOnInit() {
     this.commentGroup.controls['commentRating'].setValue(3);
@@ -64,12 +64,13 @@ export class CommentAddComponent implements OnInit {
         this.api
           .postPartComment(this.item, text, rating)
           .subscribe((data: any) => {
-            this.toast.present('top', 'Comment added!');
+            this.toast.present('top', 'Comment added to Part!');
           });
       } else {
-        this.api.postConfigurationComment(this.item, text, rating)
+        this.api
+          .postConfigurationComment(this.item, text, rating)
           .subscribe((data: any) => {
-            this.toast.present('top', 'Comment added!');
+            this.toast.present('top', 'Comment added to Configuration!');
           })
       }
     }

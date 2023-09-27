@@ -22,7 +22,7 @@ export class ApiService {
   public psus: any[] = [];
   public rams: any[] = [];
 
-  constructor(private http: HttpClient, private user: UserService) {}
+  constructor(private http: HttpClient, private user: UserService) { }
 
   getBasicAuthHeader() {
     // const header = {
@@ -36,13 +36,21 @@ export class ApiService {
 
   getAllParts(): Observable<any> {
     const allPartsUrl = environment.api.baseUrl + '/pc-parts/all-parts';
-
+    console.log('getting all parts');
     if (this.allParts().length > 0) {
-      return of();
+      // return of();
     }
 
     return this.http.get(allPartsUrl).pipe(
       tap((data: any) => {
+        this.cases = [];
+        this.cpus = [];
+        this.gpus = [];
+        this.fans = [];
+        this.psus = [];
+        this.motherboards = [];
+        this.rams = [];
+        console.log('RESET');
         data.forEach((element: any) => {
           switch (element.data.type) {
             case 'CASE':
@@ -82,6 +90,7 @@ export class ApiService {
     this.fans = [];
     this.psus = [];
     this.motherboards = [];
+    this.rams = [];
     return this.getAllParts();
   }
 
@@ -132,7 +141,7 @@ export class ApiService {
       );
   }
 
-  isModerator() {}
+  isModerator() { }
 
   getPartImageLink(id: string): string {
     return environment.api.baseUrl + '/pc-parts/' + id + '/image';
@@ -152,15 +161,17 @@ export class ApiService {
       'Basic ' + btoa('admin:admin')
     );
 
-    this.http
+    return this.http
       .post(partImageUrl, formData, {
         headers: httpHeader,
         responseType: 'text',
-      })
-      .subscribe((data: any) => {
-        console.log(data);
+      }).pipe(tap((data: any) => {
         this.getPartImageLink(id);
-      });
+      }))
+    // .subscribe((data: any) => {
+    //   console.log(data);
+    //   this.getPartImageLink(id);
+    // });
   }
 
   getPartImageSrc(part: any) {
@@ -215,31 +226,40 @@ export class ApiService {
       commentary: text,
       userRating: rating,
     };
-    return this.http
+    let observable: Observable<any> = this.http
       .post(url, body, { headers: header })
-      .pipe(tap((data: any) => {
-        console.log('posted configuration comment', data);
-      }));
+      observable.subscribe((data: any) => {
+        part.comments.push(data);
+      })
+      return observable;
+    // .pipe(tap((data: any) => {
+    //   if (!part.comments) {
+    //     part.comments = [];
+    //   }
+    //   part.comments.push(data);
+    //   console.log('posted configuration comment', data);
+    // }));
   }
 
-  getPartComments(part: any): any[] {
+  getPartComments(part: any) {
     if (part.comments) {
       return part.comments;
     }
-    this.refreshPartComments(part);
-    return part.comments;
+    return this.refreshPartComments(part);
+    // return part.comments;
   }
 
   /*
    * assigns comments[] attribute to part
    */
-  private refreshPartComments(part: any): void {
+  private refreshPartComments(part: any) {
     const url =
       environment.api.baseUrl + '/pc-parts/' + part.data.id + '/comments';
-    this.http.get(url).subscribe((data: any) => {
+    return this.http.get(url).pipe(tap((data: any) => {
       // TODO dangerous if parts not gotten correctly
       part.comments = data;
-    });
+      console.log('got comments!', data.length);
+    }));
   }
 
   getPublicConfigurationComments(part: any): Observable<any[]> {
@@ -270,16 +290,17 @@ export class ApiService {
     let observable: Observable<any> = this.http.delete(url, {
       headers: this.getBasicAuthHeader(),
     });
-    observable.subscribe(
-      (data: any) => {
-        console.log(data);
-        this.refreshPartComments(part);
-      },
-      (error: any) => {
-        console.log('error while deleting comment', error.status);
-      }
-    );
     return observable;
+    // observable.subscribe(
+    //   (data: any) => {
+    //     console.log(data);
+    //     this.refreshPartComments(part);
+    //   },
+    //   (error: any) => {
+    //     console.log('error while deleting comment', error.status);
+    //   }
+    // );
+    // return observable;
   }
 
   deleteConfigurationComment(part: any, comment: any): Observable<any> {
@@ -293,15 +314,15 @@ export class ApiService {
     let observable: Observable<any> = this.http.delete(url, {
       headers: this.getBasicAuthHeader(),
     });
-    observable.subscribe(
-      (data: any) => {
-        console.log(data);
-        this.refreshPartComments(part);
-      },
-      (error: any) => {
-        console.log('error while deleting comment', error.status);
-      }
-    );
+    // observable.subscribe(
+    //   (data: any) => {
+    //     console.log(data);
+    //     this.refreshPartComments(part);
+    //   },
+    //   (error: any) => {
+    //     console.log('error while deleting comment', error.status);
+    //   }
+    // );
     return observable;
   }
 
@@ -348,8 +369,6 @@ export class ApiService {
       })
       .pipe(
         tap((data: any) => {
-          this.forceRefreshAllParts();
-          // this.getAllParts();
         })
       );
   }

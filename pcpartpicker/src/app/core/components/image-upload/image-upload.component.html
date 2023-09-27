@@ -1,9 +1,11 @@
 <ion-img class="ion-margin" [src]="this.imgSrc"></ion-img>
-<ion-row *ngIf="this.user.role == 'admin'">
-  <ion-col>
-    <input type="file" id="file" accept="image/png,image/jpg" (change)="this.setFileInput($event)" />
-  </ion-col>
-  <ion-col>
-    <ion-button [disabled]="this.user.role != 'admin'" (click)="this.uploadSelectedFile()">upload</ion-button>
-  </ion-col>
-</ion-row>
+
+  <ion-row *ngIf="this.user.role == 'admin'">
+    <ion-col>
+      <input type="file" id="file" accept="image/png,image/jpg" (change)="this.setFileInput($event)" />
+    </ion-col>
+    <ion-col>
+      <ion-button size="small" [disabled]="this.user.role != 'admin'" (click)="this.uploadSelectedFile()"
+        class="ion-float-right">upload</ion-button>
+    </ion-col>
+  </ion-row>

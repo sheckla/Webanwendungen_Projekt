@@ -24,8 +24,15 @@ export class CommentListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.getComments();
+    // this.comments = this.part.comments;
+  }
+
+  private getComments() {
     if (this.type === 'part') {
-      this.comments = this.api.getPartComments(this.part);
+      this.api.getPartComments(this.part).subscribe((data: any) => {
+        this.comments = data;
+      });
     } else {
       this.api
         .getPublicConfigurationComments(this.part)
@@ -34,16 +41,19 @@ export class CommentListComponent implements OnInit {
         });
       // this.comments = this.api.getPublicConfigurationComments(this.part);
     }
-    // this.comments = this.part.comments;
   }
 
   deleteComment(comment: any): void {
     if (this.type == 'part') {
       this.api.deletePartComment(this.part, comment).subscribe((data: any) => {
         this.toast.present('top', 'Comment removed!');
+        this.getComments();
       });
     } else {
-      this.api.deleteConfigurationComment(this.part, comment).subscribe((data: any) => {});
+      this.api.deleteConfigurationComment(this.part, comment).subscribe((data: any) => {
+        this.toast.present('top', 'Comment removed!')
+        this.getComments();
+      });
     }
   }
 
