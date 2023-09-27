@@ -45,11 +45,15 @@ export class ConfigurationPage implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.user.login('admin', 'admin').subscribe((data: any) => {
-      console.log('login happened');
-      this.api.getPrivateConfigurations();
-      this.api.getAllParts()?.subscribe((data: any) => {});
-    });
+    // this.user.login('admin', 'admin').subscribe((data: any) => {
+    //   console.log('login happened');
+    //   this.api.getPrivateConfigurations();
+    //   this.api.getAllParts()?.subscribe((data: any) => {});
+    // });
+    this.api.getPrivateConfigurations();
+    this.api.getAllParts().subscribe((data: any) => {
+      
+    })
 
     this.disablePartIdForm();
 

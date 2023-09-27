@@ -16,10 +16,10 @@ export class AppComponent {
   public environmentInjector = inject(EnvironmentInjector);
 
   constructor(private user: UserService, private api: ApiService) {
-    this.user.login('admin', 'admin').subscribe((data: any) => {
-      console.log('login happened');
-      this.api.getPrivateConfigurations();
-      this.api.getAllParts()?.subscribe((data: any) => {});
-    });
+    // this.user.login('admin', 'admin').subscribe((data: any) => {
+    //   console.log('login happened');
+    //   this.api.getPrivateConfigurations();
+    //   this.api.getAllParts()?.subscribe((data: any) => {});
+    // });
   }
 }
