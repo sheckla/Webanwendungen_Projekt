@@ -33,9 +33,9 @@ export class PartAddComponent implements OnInit {
     public partCreator: PartCreatorService,
     public toast: ToastService,
     public api: ApiService
-  ) {}
+  ) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   cancelModal() {
     this.modal?.dismiss(null, 'cancel');
@@ -77,6 +77,7 @@ export class PartAddComponent implements OnInit {
   public onSubmit() {
     this.partGroup.updateValueAndValidity();
     this.partGroup.markAllAsTouched();
+    console.log('onpartSubmit', this.partGroup.value, this.partGroup.valid);
     if (this.partGroup.valid) {
       let partInfo: any | null = this.partGroup.get('partInfo')?.value;
       let partType: string | null = this.partGroup.get('partType')?.value;

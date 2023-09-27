@@ -1,57 +1,42 @@
 <ion-content>
   <div class="container">
-    <div style="height: 20px"></div>
+    <h1>Create and Edit Configurations!</h1>
 
     <!-- Create Configuration Form -->
-    <form
-      [formGroup]="this.createConfigurationGroup"
-      (submit)="this.onCreateConfiguration()"
-    >
+    <form [formGroup]="this.createConfigurationGroup" (submit)="this.onCreateConfiguration()">
       <ion-row>
-        <ion-col>
-          <ion-input
-            type="text"
-            placeholder="Rare Gem Build"
-            label="Configuration Name"
-            labelPlacement="stacked"
-            fill="outline"
-            [clearInput]="true"
-            errorText="Invalid configuration name"
-            formControlName="name"
-          ></ion-input>
+        <ion-col size="9">
+          <ion-input type="text" placeholder="Höllenmaschine 3000" label="Configuration Name" labelPlacement="stacked" fill="outline"
+            [clearInput]="true" errorText="Invalid configuration name" formControlName="name"></ion-input>
         </ion-col>
         <ion-col>
-          <ion-button type="submit">create config</ion-button>
+          <ion-button expand="block" type="submit">create config</ion-button>
         </ion-col>
       </ion-row>
     </form>
-    <ion-button (click)="this.onResetSelection()">Reset Selection</ion-button>
 
     <!-- *** CONFIGURATOR ***  -->
     <form [formGroup]="configurationGroup" (submit)="this.onSubmitParts()">
-      <ion-list>
-        <ion-item>
-          <!-- Select from private configurations -->
-          <ion-select
-            label="Select a Configuration"
-            interface="popover"
-            label-placement="floating"
-            [cancelText]="true"
-            formControlName="id"
-          >
-            <ion-select-option
-              *ngFor="let configuration of this.api.privateConfigurations"
-              value="{{configuration.data.id}}"
-            >
-              {{configuration.data.pcName}}
-              <span *ngIf="configuration.data.isPublic; else elseBlock"
-                >(public)</span
-              >
-              <ng-template #elseBlock><span>(private)</span></ng-template>
-            </ion-select-option>
-          </ion-select>
-        </ion-item>
-      </ion-list>
+      <ion-row>
+        <ion-col size="9">
+          <ion-list>
+            <ion-item>
+              <!-- Select from private configurations -->
+              <ion-select label="Select a Configuration" interface="popover" label-placement="floating" [cancelText]="true"
+                formControlName="id">
+                <ion-select-option *ngFor="let configuration of this.api.privateConfigurations" value="{{configuration.data.id}}">
+                  {{configuration.data.pcName}}
+                  <span *ngIf="configuration.data.isPublic; else elseBlock">(public)</span>
+                  <ng-template #elseBlock><span>(private)</span></ng-template>
+                </ion-select-option>
+              </ion-select>
+            </ion-item>
+          </ion-list>
+        </ion-col>
+        <ion-col>
+          <ion-button expand="block" (click)="this.onResetSelection()">Reset Selection</ion-button>
+        </ion-col>
+      </ion-row>
 
       <!-- Display selected configuration -->
       <div *ngIf="this.configuration">
@@ -71,105 +56,55 @@
           <ion-toggle formControlName="public">Public</ion-toggle>
 
           <!-- CPU -->
-          <ion-select
-            label="Select a CPU"
-            interface="popover"
-            label-placement="floating"
-            [cancelText]="true"
-            formControlName="cpuId"
-          >
-            <ion-select-option
-              *ngFor="let cpu of this.api.cpus"
-              value="{{cpu.data.id}}"
-            >
+          <ion-select label="Select a CPU" interface="popover" label-placement="floating" [cancelText]="true"
+            formControlName="cpuId">
+            <ion-select-option *ngFor="let cpu of this.api.cpus" value="{{cpu.data.id}}">
               {{cpu.data.partName}}
             </ion-select-option>
           </ion-select>
 
           <!-- Motherboard -->
-          <ion-select
-            label="Select a Motherboard"
-            interface="popover"
-            label-placement="floating"
-            [cancelText]="true"
-            formControlName="motherboardId"
-          >
-            <ion-select-option
-              *ngFor="let motherboard of this.api.motherboards"
-              value="{{motherboard.data.id}}"
-            >
+          <ion-select label="Select a Motherboard" interface="popover" label-placement="floating" [cancelText]="true"
+            formControlName="motherboardId">
+            <ion-select-option *ngFor="let motherboard of this.api.motherboards" value="{{motherboard.data.id}}">
               {{motherboard.data.partName}}
             </ion-select-option>
           </ion-select>
 
           <!-- Case -->
-          <ion-select
-            label="Select a Case"
-            interface="popover"
-            label-placement="floating"
-            [cancelText]="true"
-            formControlName="caseId"
-          >
-            <ion-select-option
-              *ngFor="let case of this.api.cases"
-              value="{{case.data.id}}"
-            >
+          <ion-select label="Select a Case" interface="popover" label-placement="floating" [cancelText]="true"
+            formControlName="caseId">
+            <ion-select-option *ngFor="let case of this.api.cases" value="{{case.data.id}}">
               {{case.data.partName}}
             </ion-select-option>
           </ion-select>
 
           <!-- Graphics Card -->
-          <ion-select
-            label="Select a Graphics Card"
-            interface="popover"
-            label-placement="floating"
-            [cancelText]="true"
-            formControlName="gpuId"
-          >
-            <ion-select-option
-              *ngFor="let gpu of this.api.gpus"
-              value="{{gpu.data.id}}"
-            >
+          <ion-select label="Select a Graphics Card" interface="popover" label-placement="floating" [cancelText]="true"
+            formControlName="gpuId">
+            <ion-select-option *ngFor="let gpu of this.api.gpus" value="{{gpu.data.id}}">
               {{gpu.data.partName}}
             </ion-select-option>
           </ion-select>
 
           <!-- Fan (CPU-Cooler) -->
-          <ion-select
-            label="Select a CPU-Cooler"
-            interface="popover"
-            label-placement="floating"
-            [cancelText]="true"
-            formControlName="fanId"
-          >
-            <ion-select-option
-              *ngFor="let fan of this.api.fans"
-              value="{{fan.data.id}}"
-            >
+          <ion-select label="Select a CPU-Cooler" interface="popover" label-placement="floating" [cancelText]="true"
+            formControlName="fanId">
+            <ion-select-option *ngFor="let fan of this.api.fans" value="{{fan.data.id}}">
               {{fan.data.partName}}
             </ion-select-option>
           </ion-select>
 
           <!-- PSU -->
-          <ion-select
-            label="Select a PSU"
-            interface="popover"
-            label-placement="floating"
-            [cancelText]="true"
-            formControlName="psuId"
-          >
-            <ion-select-option
-              *ngFor="let psu of this.api.psus"
-              value="{{psu.data.id}}"
-            >
+          <ion-select label="Select a PSU" interface="popover" label-placement="floating" [cancelText]="true"
+            formControlName="psuId">
+            <ion-select-option *ngFor="let psu of this.api.psus" value="{{psu.data.id}}">
               {{psu.data.partName}}
             </ion-select-option>
           </ion-select>
 
           <!-- Submit/Save -->
-          <ion-button [disabled]="!this.configuration" type="submit"
-            >Save</ion-button
-          >
+          <ion-button [disabled]="!this.configuration" type="submit">Save</ion-button>
 
           <!-- Delete Configuration -->
           <!-- <ion-button

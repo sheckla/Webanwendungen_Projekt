@@ -284,6 +284,7 @@ export class ApiService {
 
   postPart(part: any, type: string): Observable<any> {
     const url = environment.api.baseUrl + '/pc-parts/' + type.toLowerCase();
+    console.log(part);
     const headers = this.getBasicAuthHeader();
     return this.http
       .put(url, part, {

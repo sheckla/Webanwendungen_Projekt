@@ -22,7 +22,7 @@ export class PartCreatorService implements OnInit {
   public partTypesArr: PartType[] = partList;
   public partType?: PartType;
 
-  constructor(public api: ApiService) {}
+  constructor(public api: ApiService) { }
 
   ngOnInit() {
     console.log('PartCreatorService init');
@@ -50,7 +50,7 @@ export class PartCreatorService implements OnInit {
     }
   }
 
-  resetSelection() {}
+  resetSelection() { }
 
   selectedType(): Pair[] {
     switch (this.partType) {
